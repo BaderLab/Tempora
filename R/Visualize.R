@@ -1,11 +1,8 @@
 #' Visualize the trajectory
 #'
 #' Reduce the dimensionality of the pathway enrichment matrix and build the information-based cluster-cluster network
-#' @param object A Tempora object containing a gene expression matrix and metadata (cluster identity and )
-#' @param pathwaygmt A database of pathways oirganized as a .gmt file
-#' @param method Method used to calculate pathway enrichment profile. Can be "gsva", "ssgsea", "zscore" or "plage". See ?gsva for more information.
-#' @export
-#' @examples tempora_data <- ImportSeuratObject(seurat_object)
+#' @param object A Tempora object
+#' @examples tempora_data <- PlotTrajectory(tempora_data)
 #' PlotTrajectory
 PlotTrajectory <- function(object){
 

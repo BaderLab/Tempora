@@ -1,14 +1,14 @@
 #' Build mutual information-based network
 #'
-#' Reduce the dimensionality of the pathway enrichment matrix and build the information-based cluster-cluster network
+#' Build the information-based cluster-cluster network using reduced-dimensionality pathway enrichment profiles of all clusters.
+#' This network connects related cell types and states across multiple time points. Taking advantage of the available time information, Tempora also infers the directions of all connections in a trajectory that go from early to late clusters.
 #' @param object A Tempora object containing a gene expression matrix and metadata
-#' @param pathwaygmt A database of pathways oirganized as a .gmt file
-#' @param method Method used to calculate pathway enrichment profile. Can be "gsva", "ssgsea", "zscore" or "plage". See ?gsva for more information.
-#' @param similarity_threshold Percent of similarity for cutoff. Default at 0.01
+#' @param n_pcs Number of principal components to be used in building the network.
+#' @param difference_threshold Percent of permissible difference between the temporal scores of two clusters to determine the direction of their connections. The temporal scores are calculated based on based on the clusters' composition of cells from each timepoint. The directions of edges connecting pairs of clusters will only be determined for cluster pairs with difference in their time scores higher than the threshold. Other edges will remain undirected. Default at 0.01
 #' @export
-#' @examples tempora_data <- ImportSeuratObject(seurat_object)
+#' @examples tempora_data <- BuildTrajectory(tempora_object, n_pcs=10, difference_threshold=0.01)
 #' BuildTrajectory
-BuildTrajectory <- function(object, n_pcs, similarity_threshold=0.01){
+BuildTrajectory <- function(object, n_pcs, difference_threshold=0.01){
 
   if (class(object)[1] != "Tempora"){
     stop("Not a valid Tempora object")
@@ -39,7 +39,7 @@ BuildTrajectory <- function(object, n_pcs, similarity_threshold=0.01){
   edges_df$to_clusterscore <- unlist(sapply(edges_df$to, function(x) object@cluster.metadata$Cluster_time_score[which(rownames(object@cluster.metadata) == x)]))
 
 
-  edges_df$direction <- ifelse((abs(edges_df$to_clusterscore - edges_df$from_clusterscore)/(0.5*(edges_df$to_clusterscore + edges_df$from_clusterscore))) < similarity_threshold, "bidirectional", "unidirectional")
+  edges_df$direction <- ifelse((abs(edges_df$to_clusterscore - edges_df$from_clusterscore)/(0.5*(edges_df$to_clusterscore + edges_df$from_clusterscore))) < difference_threshold, "bidirectional", "unidirectional")
   edges_df <- edges_df[-which(edges_df$from_clusterscore > edges_df$to_clusterscore), ]
   edges_df$id <- ifelse(as.numeric(edges_df$from) > as.numeric(edges_df$to), paste0(edges_df$from, edges_df$to), paste0(edges_df$to, edges_df$from))
   edges_df <- edges_df[!duplicated(edges_df$id), ]
@@ -51,6 +51,5 @@ BuildTrajectory <- function(object, n_pcs, similarity_threshold=0.01){
   return(object)
 }
 
-# testobj <- BuildTrajectory(testobj, n_pcs=2, similarity_threshold = 0.03)
 
 
