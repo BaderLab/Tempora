@@ -1,15 +1,12 @@
 #' Calculate pathway enrichment profile
 #'
 #' Calculate cluster average gene expression profile and determine the pathway enrichment profile of each cluster
-#' @param object A Tempora object containing a gene expression matrix and metadata (cluster identity and )
-#' @param pathwaygmt A database of pathways oirganized as a .gmt file
-#' @param method Method used to calculate pathway enrichment profile. Can be "gsva", "ssgsea", "zscore" or "plage". See ?gsva for more information.
-#' @param min.sz
-#' @param max.sz
-#' @param parallel.sz
+#' @param object A Tempora ibject
+#' @param pval_threshold P-value threshold to determine the significance of pathway enrichment over time. Default to 0.05.
 #' @export
-#' CalculatePWProfiles
-#'
+#' @examples tempora_data <- IdentifyVaryingPWs(tempora_data, pval_threshold = 0.05)
+#' UdentifyVaryingPWs
+
 IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
 
   if (class(object)[1] != "Tempora"){
@@ -23,7 +20,7 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
   }
 
 
-  devtools::use_package("mgcv")
+  devtools::use_package("mgcv", type="Imports")
 
   gsva_bycluster <- object@cluster.pathways
 

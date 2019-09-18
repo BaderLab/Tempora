@@ -6,7 +6,7 @@
 #' @param n_pcs Number of principal components to be used in building the network.
 #' @param difference_threshold Percent of permissible difference between the temporal scores of two clusters to determine the direction of their connections. The temporal scores are calculated based on based on the clusters' composition of cells from each timepoint. The directions of edges connecting pairs of clusters will only be determined for cluster pairs with difference in their time scores higher than the threshold. Other edges will remain undirected. Default at 0.01
 #' @export
-#' @examples tempora_data <- BuildTrajectory(tempora_object, n_pcs=10, difference_threshold=0.01)
+#' @examples tempora_data <- BuildTrajectory(tempora_data, n_pcs=10, difference_threshold=0.01)
 #' BuildTrajectory
 BuildTrajectory <- function(object, n_pcs, difference_threshold=0.01){
 
@@ -19,7 +19,7 @@ BuildTrajectory <- function(object, n_pcs, difference_threshold=0.01){
     stop("Number of PCs selected exceeds number of PCs calculated")
   }
 
-  devtools::use_package("bnlearn")
+  use_package("bnlearn", type="Imports")
 
   significant_pathways_list <- gsva_pca <- list()
   for (i in 1:n_pcs){

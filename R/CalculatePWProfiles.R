@@ -8,7 +8,7 @@
 #' @param max.sz Maximum size of the genesets used in enrichment estimation, set to 200 genes by default.
 #' @param parallel.sz Type of cluster architecture when using \code{snow}. If NULL, no parallelization will be used.
 #' @export
-#' @example tempora_data <- CalculatePWProfiles(tempora_data, gmt_path="~/Human_AllPathways_September_01_2019_symbol.gmt", parallel.sz = detectCores()-2)
+#' @example tempora_data <- CalculatePWProfiles(tempora_data, gmt_path=\url{~/Human_AllPathways_September_01_2019_symbol.gmt", parallel.sz = detectCores()-2)
 #' @return An updated Tempora object containing the pathway enrichment profiles of each cluster, which can be accessed at \code{object@cluster.pathways}
 #' CalculatePWProfiles
 CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.sz=200, parallel.sz=NULL){
@@ -16,7 +16,7 @@ CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.s
     stop("Not a valid Tempora object")
   }
 
-  devtools::use_package(c("GSVA", "GSEABase", "parallel"))
+  devtools::use_package("GSVA", "GSEABase", "parallel", type="Imports")
 
   cat("Calculating cluster average gene expression profile...")
   exprMatrix <- object@data
@@ -43,9 +43,6 @@ CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.s
   return(object)
 }
 
-
-# testobj <- CalculatePWProfiles(testobj, gmt_path = "/Users/trant2/Desktop/Tempora/Human_GOBP_AllPathways_no_GO_iea_September_01_2019_symbol.gmt",
-#                                method="gsva")
 
 
 

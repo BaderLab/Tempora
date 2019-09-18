@@ -3,6 +3,7 @@
 #' Reduce the dimensionality of the pathway enrichment matrix and build the information-based cluster-cluster network
 #' @param object A Tempora object
 #' @examples tempora_data <- PlotTrajectory(tempora_data)
+#' @export
 #' PlotTrajectory
 PlotTrajectory <- function(object){
 
@@ -14,7 +15,7 @@ PlotTrajectory <- function(object){
     stop("BuildTrajectory has not been run. See ?Tempora::BuildTrajectory for details")
   }
 
-  devtools::use_package(c("igraph", "RColorBrewer"))
+  use_package("igraph", "RColorBrewer", type="Imports")
 
   edge_graph <- graph_from_data_frame(d=object@trajectory, vertices = object@cluster.metadata, directed = T)
   l <- layout_with_sugiyama(edge_graph)
@@ -42,6 +43,5 @@ PlotTrajectory <- function(object){
   return(object)
 }
 
-#testobj <- PlotTrajectory(testobj)
 
 
