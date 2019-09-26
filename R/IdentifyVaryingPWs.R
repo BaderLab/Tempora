@@ -1,11 +1,16 @@
 #' Calculate pathway enrichment profile
 #'
 #' Calculate cluster average gene expression profile and determine the pathway enrichment profile of each cluster
-#' @param object A Tempora ibject
+#' @param object A Tempora object
 #' @param pval_threshold P-value threshold to determine the significance of pathway enrichment over time. Default to 0.05.
 #' @export
-#' @examples tempora_data <- IdentifyVaryingPWs(tempora_data, pval_threshold = 0.05)
-#' UdentifyVaryingPWs
+#' @importFrom mgcv gam anova.gam plot.gam
+#' @importFrom methods new validObject
+#' @importFrom stats p.adjust prcomp screeplot
+#' @importFrom grDevices colorRampPalette
+#' @importFrom graphics axis legend par points text
+#' @importFrom reshape2 dcast
+#' @examples \dontrun{tempora_data <- IdentifyVaryingPWs(tempora_data, pval_threshold = 0.05)}
 
 IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
 
@@ -18,9 +23,6 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
   if (is.null(object@cluster.pathways)){
     stop("CalculatePWProfiles has not been run. See ?Tempora::CalculatePWProfiles for details")
   }
-
-
-  devtools::use_package("mgcv", type="Imports")
 
   gsva_bycluster <- object@cluster.pathways
 
@@ -78,4 +80,3 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
     }
 }
 
-# IdentifyVaryingPWs(testobj, pval_threshold = 0.05)

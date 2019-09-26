@@ -25,6 +25,6 @@ A Tempora object containing the expression matrix and metadata
 Imports gene expression matrix and other metadata from a seurat object
 }
 \examples{
-tempora_data <- ImportSeuratObject(seurat_object, clusters = "res.0.3", timepoints = "collection_time", timepoint_order = c("0H", "24H", "48H", "72H"), cluster_labels = c("Stem cells", "Differentiated cells"))
-Import data from a Seurat object
+\dontrun{tempora_data <- ImportSeuratObject(seurat_object, clusters = "res.0.3", timepoints = "collection_time",
+timepoint_order = c("0H", "24H", "48H", "72H"), cluster_labels = c("Stem cells", "Differentiated cells"))}
 }

@@ -13,5 +13,5 @@ PlotTrajectory(object)
 Reduce the dimensionality of the pathway enrichment matrix and build the information-based cluster-cluster network
 }
 \examples{
-tempora_data <- PlotTrajectory(tempora_data)
+\dontrun{tempora_data <- PlotTrajectory(tempora_data)}
 }

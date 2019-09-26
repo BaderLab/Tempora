@@ -1,11 +1,23 @@
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Build and Reload Package:  'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
-
 
 ###define S4 class
+#' Define a class of Tempora object
+#'
+#' A Tempora object contains the input gene expression matrix and metadata, as well as stores the meta data of each cluster,
+#' the clusters' pathway enrichment profiles, the constructed trajectory as well as the Sugiyama layout for the trajectory plot
+#'
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportClass Tempora
+#'
+#' @slot data A gene expression matrix (genes x cells), often aggregated from multiple time points
+#' @slot meta.data A dataframe containing the metadata for the cells in the gene expression matrix, which at minimum includes the
+#' collection timepoint and cluster identity of each cell
+#' @slot cluster.metadata A dataframe containing the metadata for each cell cluster
+#' @slot cluster.pathways A dataframe containing the pathway enrichment profile of each cluster as calculated by \code{\link{CalculatePWProfiles}}
+#' @slot cluster.pathways.dr A prcomp object containing the PCA of the clusters' pathway enrichment profiles
+#' @slot n.pcs The number of principal components to be used in trajectory construction
+#' @slot trajectory A dataframe describing the inferred trajectory as inferred by \code{\link{BuildTrajectory}}
+#' @slot layouts A matrix containing the Sugiyama layout of the trajectory to be used in \code{\link{PlotTrajectory}}
 Tempora <- setClass(
   "Tempora",
   slots = c(
@@ -33,82 +45,184 @@ setValidity("Tempora", function(object)
 
 ###accessors
 
+#' Data method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod data
 setGeneric("data", function(x) standardGeneric("data"))
-#' @export
-setGeneric("data<-", function(x, matrix) standardGeneric("data<-"))
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod data<-
+setGeneric("data<-", function(x, value) standardGeneric("data<-"))
+#' Extract data from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases data
+#' @param x Tempora object
 setMethod("data", "Tempora", function(x) x@data)
-setMethod("data<-", "Tempora", function(x, matrix) {
-  x@data <- matrix
+
+#' @rdname Tempora-class
+#' @aliases data<-
+#' @param value New value
+setMethod("data<-", "Tempora", function(x, value) {
+  x@data <- value
   validObject(x)
   return(x)
 })
 
+#' Metadata method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod meta.data
 setGeneric("meta.data", function(x) standardGeneric("meta.data"))
-#' @export
-setGeneric("meta.data<-", function(x, data.frame) standardGeneric("meta.data<-"))
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod meta.data<-
+setGeneric("meta.data<-", function(x, value) standardGeneric("meta.data<-"))
+#' Extract metadata from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases meta.data
 setMethod("meta.data", "Tempora", function(x) x@meta.data)
-setMethod("meta.data<-", "Tempora", function(x, data.frame) {
-  x@meta.data <- data.frame
+#' Extract metadata from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases meta.data<-
+setMethod("meta.data<-", "Tempora", function(x, value) {
+  x@meta.data <- value
   validObject(x)
   return(x)
 })
 
+#' Cluster metadata method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod cluster.metadata
 setGeneric("cluster.metadata", function(x) standardGeneric("cluster.metadata"))
-#' @export
-setGeneric("cluster.metadata<-", function(x, data.frame) standardGeneric("cluster.metadata<-"))
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod cluster.metadata<-
+setGeneric("cluster.metadata<-", function(x, value) standardGeneric("cluster.metadata<-"))
+#' Extract cluster metadata from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases cluster.metadata
 setMethod("cluster.metadata", "Tempora", function(x) x@cluster.metadata)
-setMethod("cluster.metadata<-", "Tempora", function(x, data.frame) {
+#' @rdname Tempora-class
+#' @aliases cluster.metadata<-
+setMethod("cluster.metadata<-", "Tempora", function(x, value) {
   x@cluster.metadata <- data.frame
   validObject(x)
   return(x)
 })
 
+
+#' Cluster pathway enrichment profile method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod cluster.pathways
 setGeneric("cluster.pathways", function(x) standardGeneric("cluster.pathways"))
-#' @export
-setGeneric("cluster.pathways<-", function(x, matrix) standardGeneric("cluster.pathways<-"))
-setMethod("cluster.pathways", "Tempora", function(x) x@cluster.pathway)
-setMethod("cluster.pathways<-", "Tempora", function(x, matrix) {
-  x@cluster.pathway <- matrix
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod cluster.pathways<-
+setGeneric("cluster.pathways<-", function(x, value) standardGeneric("cluster.pathways<-"))
+#' Extract cluster pathway enrichment profiles from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases cluster.pathways
+setMethod("cluster.pathways", "Tempora", function(x) x@cluster.pathways)
+#' @rdname Tempora-class
+#' @aliases cluster.pathways<-
+setMethod("cluster.pathways<-", "Tempora", function(x, value) {
+  x@cluster.pathway <- value
   validObject(x)
   return(x)
 })
 
+#' Dimension reduction of cluster pathway enrichment profile method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod cluster.pathways.dr
 setGeneric("cluster.pathways.dr", function(x) standardGeneric("cluster.pathways.dr"))
-#' @export
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod cluster.pathways.dr<-
 setGeneric("cluster.pathways.dr<-", function(x, value) standardGeneric("cluster.pathways.dr<-"))
+#' Extract PCA of cluster pathway enrichment profiles from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases cluster.pathways.dr
 setMethod("cluster.pathways.dr", "Tempora", function(x) x@cluster.pathways.dr)
+#' @rdname Tempora-class
+#' @aliases cluster.pathways.dr<-
 setMethod("cluster.pathways.dr<-", "Tempora", function(x, value) {
   x@cluster.pathways.dr <- value
   validObject(x)
   return(x)
 })
 
+#' Number of PCs to use in trajectory construction method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod n.pcs
 setGeneric("n.pcs", function(x) standardGeneric("n.pcs"))
-#' @export
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod n.pcs<-
 setGeneric("n.pcs<-", function(x, value) standardGeneric("n.pcs<-"))
+#' Extract number of PCA of cluster pathway enrichment profiles to use from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases n.pcs
 setMethod("n.pcs", "Tempora", function(x) x@cluster.pathways.dr)
+#' @rdname Tempora-class
+#' @aliases n.pcs<-
 setMethod("n.pcs<-", "Tempora", function(x, value) {
   x@n.pcs <- value
   validObject(x)
   return(x)
 })
 
+#' Trajectory method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod trajectory
 setGeneric("trajectory", function(x) standardGeneric("trajectory"))
-#' @export
-setGeneric("trajectory<-", function(x, data.frame) standardGeneric("trajectory<-"))
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod trajectory
+setGeneric("trajectory<-", function(x, value) standardGeneric("trajectory<-"))
+#' Extract the constructed trajectory from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases trajectory
 setMethod("trajectory", "Tempora", function(x) x@trajectory)
-setMethod("trajectory<-", "Tempora", function(x, data.frame) {
-  x@trajectory <- data.frame
+#' @rdname Tempora-class
+#' @aliases trajectory<-
+setMethod("trajectory<-", "Tempora", function(x, value) {
+  x@trajectory <- value
   validObject(x)
   return(x)
 })
 
+#' Trajectory layout method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod layouts
 setGeneric("layouts", function(x) standardGeneric("layouts"))
-#' @export
-setGeneric("layouts<-", function(x, data.frame) standardGeneric("layouts<-"))
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod layouts<-
+setGeneric("layouts<-", function(x, value) standardGeneric("layouts<-"))
+#' Extract the layout of the trajectory from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases layouts
 setMethod("layouts", "Tempora", function(x) x@layouts)
-setMethod("layouts<-", "Tempora", function(x, data.frame) {
-  x@layouts <- data.frame
+#' @rdname Tempora-class
+#' @aliases layouts<-
+setMethod("layouts<-", "Tempora", function(x, value) {
+  x@layouts <- value
   validObject(x)
   return(x)
 })
@@ -121,8 +235,11 @@ setMethod("layouts<-", "Tempora", function(x, data.frame) {
 #' @param timepoint_order An ordered vector of timepoint names from early to late
 #' @param cluster_labels A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL, cluster numbers will be used to label the trajectory plot
 #' @export
+#' @importFrom methods new validObject
+#' @importFrom stats p.adjust prcomp screeplot
+#' @importFrom reshape2 dcast
 #' @return A Tempora object containing the expression matrix and metadata
-#' @examples tempora_dara <- CreateTemporaObject(exprMatrix, meta.data)
+#' @examples \dontrun{tempora_dara <- CreateTemporaObject(exprMatrix, meta.data)}
 #'
 CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_labels=NULL){
 
@@ -149,9 +266,9 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
                                       function(x) sum(mapply(function(t, y) t*y, as.numeric(x), sort(unique(meta.data$Timescore), decreasing = F))))
   colnames(clustmd)[1] <- "Id"
   if (!is.null(cluster_labels)){
-    clustmd$label <- paste0("Cluster ", paste(rownames(testclustmd), cluster_labels, sep="-"))
+    clustmd$label <- paste0("Cluster ", paste(rownames(clustmd), cluster_labels, sep="-"))
   } else {
-    clustmd$label <- paste("Cluster ", rownames(testclustmd))
+    clustmd$label <- paste("Cluster ", rownames(clustmd))
   }
 
   tempora <- new("Tempora",
@@ -173,10 +290,13 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
 #' @param timepoint_order An ordered vector of timepoint names from early to late
 #' @param cluster_labels A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL, cluster numbers will be used to label the trajectory plot
 #' @export
+#' @importFrom methods new validObject
+#' @importFrom stats p.adjust prcomp screeplot
+#' @importFrom reshape2 dcast
 #' @return A Tempora object containing the expression matrix and metadata
-#' @examples tempora_data <- ImportSeuratObject(seurat_object, clusters = "res.0.3", timepoints = "collection_time", timepoint_order = c("0H", "24H", "48H", "72H"), cluster_labels = c("Stem cells", "Differentiated cells"))
+#' @examples \dontrun{tempora_data <- ImportSeuratObject(seurat_object, clusters = "res.0.3", timepoints = "collection_time",
+#' timepoint_order = c("0H", "24H", "48H", "72H"), cluster_labels = c("Stem cells", "Differentiated cells"))}
 
-#' Import data from a Seurat object
 ImportSeuratObject <- function(seuratobj, clusters, timepoints, timepoint_order, cluster_labels){
   if(class(seuratobj)[1]=='seurat'){
     requireNamespace("Seurat")
@@ -196,22 +316,4 @@ ImportSeuratObject <- function(seuratobj, clusters, timepoints, timepoint_order,
 }
 
 
-### test ###
-# load("~/Desktop/HSMM_seurat_aligned.RData")
-# testobj <- ImportSeuratObject(eb1S, clusters = "res.0.6", timepoints = "orig.ident", timepoint_order=c("T0", "T24", "T48", "T72"), cluster_labels = c("A", "B", "C"))
-#
-#
-# meta.data <- testobj@meta.data
-# clustmd <- meta.data[, c("Timepoints", "Clusters")]
-# clustmd <- dcast(clustmd, Clusters~Timepoints, value.var = "Clusters", fun.aggregate = length)
-# clustmd[, 2:ncol(clustmd)] <- t(apply(clustmd[, 2:ncol(clustmd)], 1, function(x) x/sum(x)))
-# clustmd$Cluster_time_score <- apply(clustmd[, 2:ncol(clustmd)], 1,
-#                                     function(x) sum(mapply(function(t, y) t*y, as.numeric(x), sort(unique(meta.data$Timescore), decreasing = F))))
-# colnames(clustmd)[1] <- "Id"
-# clustmd <- merge(clustmd, cluster_time_score, by="Clusters")
-#
-# if (!is.null(cluster_labels)){
-#   clustmd$label <- paste0("Cluster ", paste(rownames(testclustmd), cluster_labels, sep="-"))
-# } else {
-#   clustmd$label <- paste("Cluster ", rownames(testclustmd))
-# }
+

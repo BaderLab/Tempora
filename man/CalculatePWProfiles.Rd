@@ -27,3 +27,6 @@ CalculatePWProfiles
 \description{
 Calculate cluster average gene expression profile and determine the pathway enrichment profile of each cluster
 }
+\examples{
+\dontrun{tempora_data <- CalculatePWProfiles(tempora_data, gmt_path="~/Human_AllPathways_September_01_2019_symbol.gmt", parallel.sz = detectCores()-2)}
+}

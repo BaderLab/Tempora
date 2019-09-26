@@ -8,15 +8,18 @@
 #' @param max.sz Maximum size of the genesets used in enrichment estimation, set to 200 genes by default.
 #' @param parallel.sz Type of cluster architecture when using \code{snow}. If NULL, no parallelization will be used.
 #' @export
-#' @example tempora_data <- CalculatePWProfiles(tempora_data, gmt_path=\url{~/Human_AllPathways_September_01_2019_symbol.gmt", parallel.sz = detectCores()-2)
+#' @importFrom methods new validObject
+#' @importFrom stats p.adjust prcomp screeplot
+#' @importFrom GSVA gsva
+#' @importFrom GSEABase getGmt
+#' @importFrom reshape2 dcast
+#' @examples \dontrun{tempora_data <- CalculatePWProfiles(tempora_data, gmt_path="~/Human_AllPathways_September_01_2019_symbol.gmt", parallel.sz = detectCores()-2)}
 #' @return An updated Tempora object containing the pathway enrichment profiles of each cluster, which can be accessed at \code{object@cluster.pathways}
 #' CalculatePWProfiles
 CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.sz=200, parallel.sz=NULL){
   if (class(object)[1] != "Tempora"){
     stop("Not a valid Tempora object")
   }
-
-  devtools::use_package("GSVA", "GSEABase", "parallel", type="Imports")
 
   cat("Calculating cluster average gene expression profile...")
   exprMatrix <- object@data
@@ -40,6 +43,7 @@ CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.s
   screeplot(gsva_bycluster_pca, npcs=25, type="lines", main="PCA on pathway enrichment analysis result")
   object@cluster.pathways.dr <- gsva_bycluster_pca
 
+  validObject(object)
   return(object)
 }
 

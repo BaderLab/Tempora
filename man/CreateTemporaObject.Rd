@@ -23,6 +23,6 @@ A Tempora object containing the expression matrix and metadata
 Create new Tempora object from a processed gene expression matrix
 }
 \examples{
-tempora_dara <- CreateTemporaObject(exprMatrix, meta.data)
+\dontrun{tempora_dara <- CreateTemporaObject(exprMatrix, meta.data)}
 
 }

@@ -7,12 +7,13 @@
 IdentifyVaryingPWs(object, pval_threshold = 0.05)
 }
 \arguments{
-\item{object}{A Tempora object containing a gene expression matrix and metadata (cluster identity and )}
+\item{object}{A Tempora object}
 
-\item{pathwaygmt}{A database of pathways oirganized as a .gmt file}
-
-\item{method}{Method used to calculate pathway enrichment profile. Can be "gsva", "ssgsea", "zscore" or "plage". See ?gsva for more information.}
+\item{pval_threshold}{P-value threshold to determine the significance of pathway enrichment over time. Default to 0.05.}
 }
 \description{
 Calculate cluster average gene expression profile and determine the pathway enrichment profile of each cluster
+}
+\examples{
+\dontrun{tempora_data <- IdentifyVaryingPWs(tempora_data, pval_threshold = 0.05)}
 }

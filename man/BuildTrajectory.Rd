@@ -18,6 +18,6 @@ Build the information-based cluster-cluster network using reduced-dimensionality
 This network connects related cell types and states across multiple time points. Taking advantage of the available time information, Tempora also infers the directions of all connections in a trajectory that go from early to late clusters.
 }
 \examples{
-tempora_data <- BuildTrajectory(tempora_data, n_pcs=10, difference_threshold=0.01)
+\dontrun{tempora_data <- BuildTrajectory(tempora_data, n_pcs=10, difference_threshold=0.01)}
 BuildTrajectory
 }
