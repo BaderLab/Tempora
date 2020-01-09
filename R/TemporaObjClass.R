@@ -284,11 +284,20 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
 #' Import data from a Seurat object
 #'
 #' Imports gene expression matrix and other metadata from a seurat object
-#' @param seuratobj A Seurat object containing the normalized gene expression matrix and clustering result
+#' @param seuratobj A Seurat or SingleCellExperiment object containing the normalized gene expression matrix and clustering result
+#' @param assayType A length-one character vector representing the assay object
+#'   in which the expression data is stored in the input object. For Seurat v1
+#'   or v2 objects, set this to "". For Seurat v3 objects, this is often "RNA".
+#'   For SingleCellExperiment objects, this is often "logcounts".
+#' @param assaySlot An optional length-one character vector representing the
+#'   slot of the Seurat v3 \code{\link[Seurat]{Assay}} object to use. In Seurat
+#'   v3, normalized data is stored in the "data" slot, and counts in the
+#'   "counts" slot.
 #' @param clusters Name of the column in the meta.data dataframe containing the cluster identity of all cells in the dataset
 #' @param timepoints Name of the column in the meta.data dataframe containing the collection time of all cells in the dataset
 #' @param timepoint_order An ordered vector of timepoint names from early to late
 #' @param cluster_labels A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL, cluster numbers will be used to label the trajectory plot
+#' @include dataAccess.R
 #' @export
 #' @importFrom methods new validObject
 #' @importFrom stats p.adjust prcomp screeplot
@@ -297,15 +306,16 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
 #' @examples \dontrun{tempora_data <- ImportSeuratObject(seurat_object, clusters = "res.0.3", timepoints = "collection_time",
 #' timepoint_order = c("0H", "24H", "48H", "72H"), cluster_labels = c("Stem cells", "Differentiated cells"))}
 
-ImportSeuratObject <- function(seuratobj, clusters, timepoints, timepoint_order, cluster_labels){
-  if(class(seuratobj)[1]=='seurat'){
-    requireNamespace("Seurat")
-  } else {
-    stop("Not a Seurat object. Tempora only supports importing Seurat objects at the moment. See ?Tempora::CreateTemporaObject to manually create a Tempora object from an expression matrix")
-  }
-  data <- seuratobj@data
+ImportSeuratObject <- function(seuratobj, assayType = "", assaySlot = NA,
+                               clusters, timepoints, timepoint_order, cluster_labels){
+  # if(class(seuratobj)[1]=='seurat'){
+  #   requireNamespace("Seurat")
+  # } else {
+  #   stop("Not a Seurat object. Tempora only supports importing Seurat objects at the moment. See ?Tempora::CreateTemporaObject to manually create a Tempora object from an expression matrix")
+  # }
+  data <- getExpr(seuratobj,assayType,assaySlot)
   cat("Extracting data...")
-  metadata <- seuratobj@meta.data
+  metadata <- getMD(seuratobj)
   cat("\nExtracting metadata...")
   colnames(metadata)[which(colnames(metadata)==clusters)] <- "Clusters"
   colnames(metadata)[which(colnames(metadata)==timepoints)] <- "Timepoints"
