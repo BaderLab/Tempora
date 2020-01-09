@@ -314,6 +314,14 @@ ImportSeuratObject <- function(seuratobj, assayType = "", assaySlot = NA,
   #   stop("Not a Seurat object. Tempora only supports importing Seurat objects at the moment. See ?Tempora::CreateTemporaObject to manually create a Tempora object from an expression matrix")
   # }
   data <- getExpr(seuratobj,assayType,assaySlot)
+  if (! is.numeric(data)) {
+    data <- as.matrix(data)
+    # often Seurat / SingleCellExperiment data matrices are stored as sparse
+    # Matrix::dgCMatrix objects. Since the S4 class requires this object to be
+    # numeric, we must convert them to traditional numeric R matrices, despite
+    # the increased memory costs this entails. Or allow sparse matrices in the
+    # S4 class, but that would involve some further debugging...
+  }
   cat("Extracting data...")
   metadata <- getMD(seuratobj)
   cat("\nExtracting metadata...")
