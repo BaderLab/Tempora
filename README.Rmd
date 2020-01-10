@@ -60,13 +60,13 @@ cortex_tempora <- ImportSeuratObject(MouseCortex, clusters = "res.0.6",
                                      timepoint_order = c("e11", "e13", "e15", "e17"))
 ```
 
-From the specified clustering result, Tempora will automatically calculate the temporal score of each cluster, which is based on its composition of cells from each timepoint. This information will be stored in the cluster.metadata slot of the Tempora object.
+From the specified clustering result, Tempora will automatically calculate the temporal score of each cluster, which is based on its composition of cells from each timepoint. This information will be stored in the _cluster.metadata_ slot of the Tempora object.
 
 ### Calculate clusters' pathway enrichment profiles
 
 Next, the pathway enrichment profiles of the clusters are calculated using [GSVA](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-7) and stored in the _cluster.pathways_ slot of the Tempora object. The default pathway gene set database Tempora uses is the Bader Lab pathway gene set database without electronic annotation Gene Ontology terms, which can be accessed on the [Bader Lab website](http://download.baderlab.org/EM_Genesets/current_release/). 
 
-This function also performs principal component analysis (PCA) on the clusters pathway enrichment profiles to remove redundancy due to overrepresentation of certain pathways in the database. The PCA result is stored in the _cluster.pathways.dr_ It outputs a scree plot to help users identify the number of principal components (PCs) to be used in downstream trajectory construction. 
+This function also performs principal component analysis (PCA) on the clusters pathway enrichment profiles to remove redundancy due to overrepresentation of certain pathways in the database. The PCA result is stored in the _cluster.pathways.dr_ slot. Tempora also outputs a scree plot to help users identify the number of principal components (PCs) to be used in downstream trajectory construction. 
 
 ```{r eval=F, tidy=F}
 #Estimate pathway enrichment profiles of clusters

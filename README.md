@@ -76,7 +76,7 @@ cortex_tempora <- ImportSeuratObject(MouseCortex, clusters = "res.0.6",
 From the specified clustering result, Tempora will automatically
 calculate the temporal score of each cluster, which is based on its
 composition of cells from each timepoint. This information will be
-stored in the cluster.metadata slot of the Tempora object.
+stored in the *cluster.metadata* slot of the Tempora object.
 
 ### Calculate clusters’ pathway enrichment profiles
 
@@ -92,9 +92,9 @@ website](http://download.baderlab.org/EM_Genesets/current_release/).
 This function also performs principal component analysis (PCA) on the
 clusters pathway enrichment profiles to remove redundancy due to
 overrepresentation of certain pathways in the database. The PCA result
-is stored in the *cluster.pathways.dr* It outputs a scree plot to help
-users identify the number of principal components (PCs) to be used in
-downstream trajectory construction.
+is stored in the *cluster.pathways.dr* slot. Tempora also outputs a
+scree plot to help users identify the number of principal components
+(PCs) to be used in downstream trajectory construction.
 
 ``` r
 #Estimate pathway enrichment profiles of clusters

@@ -6,7 +6,7 @@
 #' @param method Method used to estimate pathway enrichment profile per cluster. Can be "gsva", "ssgsea", "zscore" or "plage", default to "gsva". See ?gsva for more information.
 #' @param min.sz Minimum size of the genesets used in enrichment estimation, set to 5 genes by default.
 #' @param max.sz Maximum size of the genesets used in enrichment estimation, set to 200 genes by default.
-#' @param parallel.sz Type of cluster architecture when using \code{snow}. If NULL, no parallelization will be used.
+#' @param parallel.sz Type of cluster architecture when using \code{snow}. If 1, no parallelization will be used. If 0, all available cores will be used.
 #' @export
 #' @importFrom methods new validObject
 #' @importFrom stats p.adjust prcomp screeplot
