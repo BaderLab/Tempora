@@ -16,7 +16,7 @@
 #' @examples \dontrun{tempora_data <- CalculatePWProfiles(tempora_data, gmt_path="~/Human_AllPathways_September_01_2019_symbol.gmt", parallel.sz = detectCores()-2)}
 #' @return An updated Tempora object containing the pathway enrichment profiles of each cluster, which can be accessed at \code{object@cluster.pathways}
 #' CalculatePWProfiles
-CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.sz=200, parallel.sz=NULL){
+CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.sz=200, parallel.sz=1){
   if (class(object)[1] != "Tempora"){
     stop("Not a valid Tempora object")
   }
