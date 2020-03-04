@@ -39,6 +39,7 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
   cat("Fitting GAM models...")
 
   p_vals <- gams <- list()
+  plot_df <- data.frame()
   for (i in 1:length(themes)){
     if (length(grep(themes[i], rownames(gsva_bycluster))) > 1){
       plot_df <- data.frame(cluster=colnames(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]), value=colMeans(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]))
