@@ -259,6 +259,9 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
   if (is.null(cluster_labels) & is.null(celltype_markers)){
     stop("Either a vector of cluster labels or a list of cell type markers is required")
   }
+  if (rownames(meta.data) != colnames(exprMatrix)){
+    stop("Different cell names are found in the gene expression matrix and meta data. Please ensure the column names of your expression matrix and the row names of metadata are the same")
+  }
 
   meta.data$Timepoints <- factor(meta.data$Timepoints, levels = timepoint_order)
   meta.data$Timescore <- as.integer(meta.data$Timepoints)
