@@ -2,18 +2,6 @@ Tempora: cell trajectory inference using time-series single-cell RNA
 sequencing data
 ================
 
-  - [Introduction](#introduction)
-  - [Usage](#usage)
-      - [Installation](#installation)
-      - [Sample data](#sample-data)
-      - [Input data](#input-data)
-      - [Calculate clusters’ pathway enrichment
-        profiles](#calculate-clusters-pathway-enrichment-profiles)
-      - [Build and visualize
-        trajectory](#build-and-visualize-trajectory)
-      - [Identify temporally dependent
-        pathways](#identify-temporally-dependent-pathways)
-
 ## Introduction
 
 Tempora is a novel cell trajectory inference method that orders cells
@@ -100,7 +88,7 @@ scree plot to help users identify the number of principal components
 #Estimate pathway enrichment profiles of clusters
 cortex_tempora <- CalculatePWProfiles(cortex_tempora, 
                 gmt_path = "Mouse_GOBP_AllPathways_no_GO_iea_September_01_2019_symbol.gmt",
-                method="gsva", min.sz = 5, max.sz = 200, parallel.sz = DetectCores()-2)
+                method="gsva", min.sz = 5, max.sz = 200, parallel.sz = 1)
 ```
 
 ### Build and visualize trajectory

@@ -72,7 +72,7 @@ This function also performs principal component analysis (PCA) on the clusters p
 #Estimate pathway enrichment profiles of clusters
 cortex_tempora <- CalculatePWProfiles(cortex_tempora, 
                 gmt_path = "Mouse_GOBP_AllPathways_no_GO_iea_September_01_2019_symbol.gmt",
-                method="gsva", min.sz = 5, max.sz = 200, parallel.sz = DetectCores()-2)
+                method="gsva", min.sz = 5, max.sz = 200, parallel.sz = 1)
 ```
 
 ### Build and visualize trajectory 
