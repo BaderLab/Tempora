@@ -24,6 +24,8 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
     stop("CalculatePWProfiles has not been run. See ?Tempora::CalculatePWProfiles for details")
   }
 
+  object <- cortex_tempora
+
   gsva_bycluster <- object@cluster.pathways
 
   significant_pathways <- c()
@@ -33,17 +35,17 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
   }
 
   pca_pathways <- sub("%.*", "", significant_pathways)
-  pca_pathways_cleaned <- gsub("\\.|_|\\+", " ", pca_pathways)
+  pca_pathways_cleaned <- gsub("[[:punct:]]", "", pca_pathways)
   themes <- pca_pathways_cleaned
 
   cat("Fitting GAM models...")
 
   p_vals <- gams <- list()
-  plot_df <- data.frame()
   for (i in 1:length(themes)){
+    print(i)
     if (length(grep(themes[i], rownames(gsva_bycluster))) > 1){
-      plot_df <- data.frame(cluster=colnames(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]), value=colMeans(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]))
-    } else if  (length(grep(themes[i], rownames(gsva_bycluster))) == 1){
+      plot_df <- data.frame(cluster=colnames(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]), value=colMeans(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ], na.rm=T))
+    } else if (length(grep(themes[i], rownames(gsva_bycluster))) == 1){
       plot_df <- data.frame(cluster=names(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]), value=gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]) }
     plot_df$time <- object@cluster.metadata$Cluster_time_score
     gams[[i]] <- mgcv::gam(value ~ s(time, k=3, bs='cr'), data=plot_df)
@@ -80,4 +82,5 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
     axis(side=1, at=c(xmin, xmax), labels = c("Early", "Late"), tick=T)
     }
 }
+
 
