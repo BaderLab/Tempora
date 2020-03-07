@@ -4,11 +4,28 @@
 \alias{ImportSeuratObject}
 \title{Import data from a Seurat object}
 \usage{
-ImportSeuratObject(seuratobj, clusters, timepoints, timepoint_order,
-  cluster_labels)
+ImportSeuratObject(
+  seuratobj,
+  assayType = "",
+  assaySlot = NA,
+  clusters,
+  timepoints,
+  timepoint_order,
+  cluster_labels
+)
 }
 \arguments{
-\item{seuratobj}{A Seurat object containing the normalized gene expression matrix and clustering result}
+\item{seuratobj}{A Seurat or SingleCellExperiment object containing the normalized gene expression matrix and clustering result}
+
+\item{assayType}{A length-one character vector representing the assay object
+in which the expression data is stored in the input object. For Seurat v1
+or v2 objects, set this to "". For Seurat v3 objects, this is often "RNA".
+For SingleCellExperiment objects, this is often "logcounts".}
+
+\item{assaySlot}{An optional length-one character vector representing the
+slot of the Seurat v3 \code{\link[Seurat]{Assay}} object to use. In Seurat
+v3, normalized data is stored in the "data" slot, and counts in the
+"counts" slot.}
 
 \item{clusters}{Name of the column in the meta.data dataframe containing the cluster identity of all cells in the dataset}
 
@@ -17,6 +34,8 @@ ImportSeuratObject(seuratobj, clusters, timepoints, timepoint_order,
 \item{timepoint_order}{An ordered vector of timepoint names from early to late}
 
 \item{cluster_labels}{A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL, cluster numbers will be used to label the trajectory plot}
+
+\item{cell_markers}{A list of possible cell types found in the dataset and their marker genes.}
 }
 \value{
 A Tempora object containing the expression matrix and metadata

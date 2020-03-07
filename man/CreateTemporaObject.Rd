@@ -4,8 +4,13 @@
 \alias{CreateTemporaObject}
 \title{Create new Tempora object from a processed gene expression matrix}
 \usage{
-CreateTemporaObject(exprMatrix, meta.data, timepoint_order,
-  cluster_labels = NULL)
+CreateTemporaObject(
+  exprMatrix,
+  meta.data,
+  timepoint_order,
+  cluster_labels = NULL,
+  cell_markers = NULL
+)
 }
 \arguments{
 \item{exprMatrix}{A normalized gene expression matrix containing cells from all timepoints of the time-series study. Batch effect correction is highly recommended before normalization.}
@@ -15,6 +20,8 @@ CreateTemporaObject(exprMatrix, meta.data, timepoint_order,
 \item{timepoint_order}{An ordered vector of timepoint names from early to late}
 
 \item{cluster_labels}{A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL, cluster numbers will be used to label the trajectory plot}
+
+\item{cell_markers}{A list of possible cell types found in the dataset and their marker genes.}
 }
 \value{
 A Tempora object containing the expression matrix and metadata

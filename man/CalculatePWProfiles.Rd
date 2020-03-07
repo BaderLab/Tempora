@@ -4,8 +4,14 @@
 \alias{CalculatePWProfiles}
 \title{Calculate pathway enrichment profile}
 \usage{
-CalculatePWProfiles(object, gmt_path, method = "gsva", min.sz = 5,
-  max.sz = 200, parallel.sz = NULL)
+CalculatePWProfiles(
+  object,
+  gmt_path,
+  method = "gsva",
+  min.sz = 5,
+  max.sz = 200,
+  parallel.sz = 1
+)
 }
 \arguments{
 \item{object}{A Tempora object containing a gene expression matrix and metadata (cluster identity and )}
@@ -18,7 +24,7 @@ CalculatePWProfiles(object, gmt_path, method = "gsva", min.sz = 5,
 
 \item{max.sz}{Maximum size of the genesets used in enrichment estimation, set to 200 genes by default.}
 
-\item{parallel.sz}{Type of cluster architecture when using \code{snow}. If NULL, no parallelization will be used.}
+\item{parallel.sz}{Type of cluster architecture when using \code{snow}. If 1, no parallelization will be used. If 0, all available cores will be used.}
 }
 \value{
 An updated Tempora object containing the pathway enrichment profiles of each cluster, which can be accessed at \code{object@cluster.pathways}

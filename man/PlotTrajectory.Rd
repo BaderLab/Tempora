@@ -4,10 +4,12 @@
 \alias{PlotTrajectory}
 \title{Visualize the trajectory}
 \usage{
-PlotTrajectory(object)
+PlotTrajectory(object, ...)
 }
 \arguments{
 \item{object}{A Tempora object}
+
+\item{...}{Any additional arguments to plot.igraph}
 }
 \description{
 Reduce the dimensionality of the pathway enrichment matrix and build the information-based cluster-cluster network
