@@ -11,7 +11,8 @@ ImportSeuratObject(
   clusters,
   timepoints,
   timepoint_order,
-  cluster_labels
+  cluster_labels = NULL,
+  cell_markers = NULL
 )
 }
 \arguments{
@@ -33,9 +34,9 @@ v3, normalized data is stored in the "data" slot, and counts in the
 
 \item{timepoint_order}{An ordered vector of timepoint names from early to late}
 
-\item{cluster_labels}{A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL, cluster numbers will be used to label the trajectory plot}
+\item{cluster_labels}{(Optional) A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL and \code{cell_markers} is given, automatic cluster annotation using GSVA will be performed. If both are NULL, cluster numbers will be used to label the trajectory plot.}
 
-\item{cell_markers}{A list of possible cell types found in the dataset and their marker genes.}
+\item{cell_markers}{(Optional) A list of possible cell types found in the dataset and their marker genes to be used for automatic cell type identification. If NULL and no \code{cluster_labels} is given, cluster numbers will be used to label the trajectory plot.}
 }
 \value{
 A Tempora object containing the expression matrix and metadata
@@ -44,6 +45,6 @@ A Tempora object containing the expression matrix and metadata
 Imports gene expression matrix and other metadata from a seurat object
 }
 \examples{
-\dontrun{tempora_data <- ImportSeuratObject(seurat_object, clusters = "res.0.3", timepoints = "collection_time",
+\dontrun{tempora_data <- ImportSeuratObject(seurat_object, assayType="", clusters = "res.0.3", timepoints = "collection_time",
 timepoint_order = c("0H", "24H", "48H", "72H"), cluster_labels = c("Stem cells", "Differentiated cells"))}
 }

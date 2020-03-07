@@ -233,8 +233,8 @@ setMethod("layouts<-", "Tempora", function(x, value) {
 #' @param exprMatrix A normalized gene expression matrix containing cells from all timepoints of the time-series study. Batch effect correction is highly recommended before normalization.
 #' @param meta.data A dataframe of meta data for all cells in the expression matrix. Each column is a feature and each row stores single cell information. At minimum, this dataframe should contain two columns: a "Clusters" column storing the clustering identity and a "Timepoints" column storing the timepoint when each cell comes from
 #' @param timepoint_order An ordered vector of timepoint names from early to late
-#' @param cluster_labels A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL, cluster numbers will be used to label the trajectory plot
-#' @param cell_markers A list of possible cell types found in the dataset and their marker genes.
+#' @param cluster_labels (Optional) A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL and \code{cell_markers} is given, automatic cluster annotation using GSVA will be performed. If both are NULL, cluster numbers will be used to label the trajectory plot.
+#' @param cell_markers (Optional) A list of possible cell types found in the dataset and their marker genes to be used for automatic cell type identification. If NULL and no \code{cluster_labels} is given, cluster numbers will be used to label the trajectory plot.
 #' @export
 #' @importFrom methods new validObject
 #' @importFrom stats p.adjust prcomp screeplot
@@ -256,9 +256,6 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
   if (any(!meta.data$Timepoints %in% timepoint_order)){
     stop("List of timepoints does not match the timepoints in the data")
   }
-  if (is.null(cluster_labels) & is.null(celltype_markers)){
-    stop("Either a vector of cluster labels or a list of cell type markers is required")
-  }
   if (rownames(meta.data) != colnames(exprMatrix)){
     stop("Different cell names are found in the gene expression matrix and meta data. Please ensure the column names of your expression matrix and the row names of metadata are the same")
   }
@@ -272,13 +269,17 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
   clustmd$Cluster_time_score <- apply(clustmd[, 2:ncol(clustmd)], 1,
                                       function(x) sum(mapply(function(t, y) t*y, as.numeric(x), sort(unique(meta.data$Timescore), decreasing = F))))
   colnames(clustmd)[1] <- "Id"
-  if (!is.null(cluster_labels)){
+  if (!is.null(cluster_labels) & !is.null(cell_markers)){
     clustmd$label <- paste0("Cluster ", paste(rownames(clustmd), cluster_labels, sep="-"))
-  } else {
+  } else if (!is.null(cluster_labels)){
+    clustmd$label <- paste0("Cluster ", paste(rownames(clustmd), cluster_labels, sep="-"))
+  } else if (!is.null(cell_markers)) {
     cluster_number <- as.numeric(meta.data$Clusters)
     names(cluster_number) <- rownames(meta.data)
     cluster_labels <- Tempora::IdentifyCellTypes(exprMatrix, cluster_labels=cluster_number, cell_markers=cell_markers)
-    clustmd$label <- paste("Cluster ", rownames(clustmd), cluster_labels, sep="-")
+    clustmd$label <- paste0("Cluster ", paste(rownames(clustmd), cluster_labels, sep="-"))
+  } else {
+    clustmd$label <- paste("Cluster ", rownames(clustmd))
   }
 
   tempora <- new("Tempora",
@@ -306,8 +307,8 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
 #' @param clusters Name of the column in the meta.data dataframe containing the cluster identity of all cells in the dataset
 #' @param timepoints Name of the column in the meta.data dataframe containing the collection time of all cells in the dataset
 #' @param timepoint_order An ordered vector of timepoint names from early to late
-#' @param cluster_labels A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL, cluster numbers will be used to label the trajectory plot
-#' @param cell_markers A list of possible cell types found in the dataset and their marker genes.
+#' @param cluster_labels (Optional) A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL and \code{cell_markers} is given, automatic cluster annotation using GSVA will be performed. If both are NULL, cluster numbers will be used to label the trajectory plot.
+#' @param cell_markers (Optional) A list of possible cell types found in the dataset and their marker genes to be used for automatic cell type identification. If NULL and no \code{cluster_labels} is given, cluster numbers will be used to label the trajectory plot.
 #' @include dataAccess.R
 
 #' @export
@@ -315,12 +316,12 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
 #' @importFrom stats p.adjust prcomp screeplot
 #' @importFrom reshape2 dcast
 #' @return A Tempora object containing the expression matrix and metadata
-#' @examples \dontrun{tempora_data <- ImportSeuratObject(seurat_object, clusters = "res.0.3", timepoints = "collection_time",
+#' @examples \dontrun{tempora_data <- ImportSeuratObject(seurat_object, assayType="", clusters = "res.0.3", timepoints = "collection_time",
 #' timepoint_order = c("0H", "24H", "48H", "72H"), cluster_labels = c("Stem cells", "Differentiated cells"))}
 
 
 ImportSeuratObject <- function(seuratobj, assayType = "", assaySlot = NA,
-                               clusters, timepoints, timepoint_order, cluster_labels){
+                               clusters, timepoints, timepoint_order, cluster_labels=NULL, cell_markers=NULL){
   # if(class(seuratobj)[1]=='seurat'){
   #   requireNamespace("Seurat")
   # } else {
