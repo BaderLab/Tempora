@@ -14,11 +14,11 @@ IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers){
   }
 
   exprMatrix_bycluster <- list()
-  for (i in sort(as.numeric(levels(object@meta.data$Clusters)))){
+  for (i in sort(as.numeric(unique(object@meta.data$Clusters)))){
     exprMatrix_bycluster[[i]] <- rowMeans(exprMatrix[, which(colnames(exprMatrix) %in% name(cluster_labels)[which(cluster_labels == i)])])
   }
   exprMatrix_bycluster <- do.call(cbind, exprMatrix_bycluster)
-  colnames(exprMatrix_bycluster) <- sort(as.numeric(levels(object@meta.data$Clusters)))
+  colnames(exprMatrix_bycluster) <- sort(as.numeric(unique(object@meta.data$Clusters)))
   rownames(exprMatrix_bycluster) <- rownames(exprMatrix)
 
   cell_type_classifier <- GSVA::gsva(exprMatrix_bycluster, cell_markers, parallel.sz=1)
