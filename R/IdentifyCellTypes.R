@@ -9,8 +9,7 @@
 #' @importFrom reshape2 melt
 #' @importFrom tibble rownames_to_column
 #' @return A vector of cell types inferred from the expression of marker genes provided
-#' CalculatePWProfiles
-IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers){
+IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers, threshold){
   exprMatrix_bycluster <- list()
   for (i in sort(as.numeric(unique(cluster_labels)))){
     exprMatrix_bycluster[[i]] <- rowMeans(exprMatrix[, which(colnames(exprMatrix) %in% names(cluster_labels)[which(cluster_labels == i)])])
@@ -21,7 +20,7 @@ IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers){
 
   cell_type_classifier <- GSVA::gsva(exprMatrix_bycluster, cell_markers, parallel.sz=1)
 
-  cell_types <- apply(cell_type_classifier, 2, function(x) paste(rownames(cell_type_classifier)[which(x>0.8)], collapse="/"))
+  cell_types <- apply(cell_type_classifier, 2, function(x) rownames(cell_type_classifier)[which(x==max(x))])
   if (any(cell_types == "")){
     cell_types[cell_types==""] <- "Unclassified"
   }
