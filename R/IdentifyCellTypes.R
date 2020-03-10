@@ -9,10 +9,6 @@
 #' @return A vector of cell types inferred from the expression of marker genes provided
 #' CalculatePWProfiles
 IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers){
-  if (!is.numeric(exprMatrix)) {
-    stop("Expression matrix is not numeric")
-  }
-
   exprMatrix_bycluster <- list()
   for (i in sort(as.numeric(unique(object@meta.data$Clusters)))){
     exprMatrix_bycluster[[i]] <- rowMeans(exprMatrix[, which(colnames(exprMatrix) %in% name(cluster_labels)[which(cluster_labels == i)])])
