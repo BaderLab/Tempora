@@ -6,7 +6,7 @@
 #' @examples \dontrun{tempora_data <- PlotTrajectory(tempora_data)}
 #' @export
 #' @importFrom RColorBrewer brewer.pal
-#' @importFrom igraph layout_with_sugiyama graph_from_data_frame plot.igraph E
+#' @importFrom igraph layout_with_sugiyama graph_from_data_frame plot.igraph E layout_with_graphopt
 #' @importFrom grDevices colorRampPalette
 #' @importFrom graphics axis legend par points text
 #' @importFrom methods new validObject
@@ -28,8 +28,8 @@ PlotTrajectory <- function(object, ...){
   edge_graph <- igraph::graph_from_data_frame(d=object@trajectory, vertices = object@cluster.metadata, directed = T)
   #l <- igraph::layout_with_sugiyama(edge_graph, hgap=5, maxiter = 500)
   #l$layout[,2] <- 3-(rescale(object@cluster.metadata$Cluster_time_score, to=c(0,3)))
-  l <- layout_with_graphopt(edge_graph, spring.length = 10)
-  l[,2] <- 3-(rescale(object@cluster.metadata$Cluster_time_score, to=c(0,3)))
+  l <- igraph::layout_with_graphopt(edge_graph, spring.length = 10)
+  l[,2] <- 3-(scales::rescale(object@cluster.metadata$Cluster_time_score, to=c(0,3)))
 
 
   if (length(levels(object@meta.data$Timepoints)) > 9){
