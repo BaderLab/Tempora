@@ -276,7 +276,7 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
   } else if (!is.null(cell_markers)) {
     cluster_number <- as.numeric(meta.data$Clusters)
     names(cluster_number) <- rownames(meta.data)
-    cluster_labels <- Tempora::IdentifyCellTypes(exprMatrix, cluster_labels=cluster_number, cell_markers=cell_markers)
+    cluster_labels <- IdentifyCellTypes(exprMatrix, cluster_labels=cluster_number, cell_markers=cell_markers)
     clustmd$label <- paste0("Cluster ", paste(rownames(clustmd), cluster_labels, sep="-"))
   } else {
     clustmd$label <- paste("Cluster ", rownames(clustmd))
