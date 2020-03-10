@@ -21,7 +21,7 @@ IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers){
 
   cell_type_classifier <- GSVA::gsva(exprMatrix_bycluster, cell_markers, parallel.sz=1)
 
-  cell_types <- apply(cell_type_classifier, 2, function(x) paste(rownames(cell_type_classifier)[which(x>0.5)], collapse="/"))
+  cell_types <- apply(cell_type_classifier, 2, function(x) paste(rownames(cell_type_classifier)[which(x>0.8)], collapse="/"))
   if (any(cell_types == "")){
     cell_types[cell_types==""] <- "Unclassified"
   }
