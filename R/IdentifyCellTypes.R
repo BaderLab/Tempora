@@ -9,7 +9,7 @@
 #' @importFrom reshape2 melt
 #' @importFrom tibble rownames_to_column
 #' @return A vector of cell types inferred from the expression of marker genes provided
-IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers, threshold){
+IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers){
   exprMatrix_bycluster <- list()
   for (i in sort(as.numeric(unique(cluster_labels)))){
     exprMatrix_bycluster[[i]] <- rowMeans(exprMatrix[, which(colnames(exprMatrix) %in% names(cluster_labels)[which(cluster_labels == i)])])
