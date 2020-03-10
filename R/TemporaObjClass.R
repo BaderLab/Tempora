@@ -256,9 +256,6 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
   if (any(!meta.data$Timepoints %in% timepoint_order)){
     stop("List of timepoints does not match the timepoints in the data")
   }
-  if (rownames(meta.data) != colnames(exprMatrix)){
-    stop("Different cell names are found in the gene expression matrix and meta data. Please ensure the column names of your expression matrix and the row names of metadata are the same")
-  }
 
   meta.data$Timepoints <- factor(meta.data$Timepoints, levels = timepoint_order)
   meta.data$Timescore <- as.integer(meta.data$Timepoints)

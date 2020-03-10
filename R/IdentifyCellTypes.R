@@ -6,7 +6,6 @@
 #' @param cluster_labels A named vector of cluster identifier for each cell in the gene expression matrix
 #' @export
 #' @importFrom GSVA gsva
-#' @importFrom ggplot2 ggplot
 #' @importFrom reshape2 melt
 #' @importFrom tibble rownames_to_column
 #' @return A vector of cell types inferred from the expression of marker genes provided
@@ -21,14 +20,6 @@ IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers){
   rownames(exprMatrix_bycluster) <- rownames(exprMatrix)
 
   cell_type_classifier <- GSVA::gsva(exprMatrix_bycluster, cell_markers, parallel.sz=1)
-  cell_type_classifier_m <- reshape2::melt(tibble::rownames_to_column(as.data.frame(cell_type_classifier), var="Cell_type"))
-  colnames(cell_type_classifier_m)[2] <- "Cluster"
-  cell_type_classifier_m$Cluster <- sub("^V", "", cell_type_classifier_m$Cluster)
-  cell_type_classifier_m$Cluster <- factor(cell_type_classifier_m$Cluster, levels=seq(1:length(unique(cell_type_classifier_m$Cluster))))
-
-  celltype_plot <- ggplot2::ggplot(cell_type_classifier_m, aes(x=Cluster, y=Cell_type, size=value, color=value)) + geom_point(alpha = 0.8, stroke=0) + scale_x_discrete() + theme_bw()
-  celltype_plot <- celltype_plot+scale_size(range = c(1, 12), limits=c(-0.1, 1)) + theme(axis.text.x = element_text(angle = 45, hjust = 1)) + scale_color_gradient(low = "grey100",  high = "black", space = "Lab", limit = c(-0.1, 1)) + ggtitle("Cell type prediction scores")
-  plot(celltype_plot)
 
   cell_types <- apply(cell_type_classifier, 2, function(x) paste(rownames(cell_type_classifier)[which(x>0.5)], collapse="/"))
   if (any(cell_types == "")){
