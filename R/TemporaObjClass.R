@@ -274,6 +274,7 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
   } else if (!is.null(cluster_labels)){
     clustmd$label <- paste0("Cluster ", paste(rownames(clustmd), cluster_labels, sep="-"))
   } else if (!is.null(cell_markers)) {
+    cat("\nPerforming automated cluster labeling with GSVA...")
     cluster_number <- as.numeric(meta.data$Clusters)
     names(cluster_number) <- rownames(meta.data)
     cluster_labels <- IdentifyCellTypes(exprMatrix, cluster_labels=cluster_number, cell_markers=cell_markers)
