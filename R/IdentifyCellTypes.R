@@ -13,7 +13,7 @@
 IdentifyCellTypes <- function(exprMatrix, cluster_labels, cell_markers){
   exprMatrix_bycluster <- list()
   for (i in sort(as.numeric(unique(cluster_labels)))){
-    exprMatrix_bycluster[[i]] <- rowMeans(exprMatrix[, which(colnames(exprMatrix) %in% name(cluster_labels)[which(cluster_labels == i)])])
+    exprMatrix_bycluster[[i]] <- rowMeans(exprMatrix[, which(colnames(exprMatrix) %in% names(cluster_labels)[which(cluster_labels == i)])])
   }
   exprMatrix_bycluster <- do.call(cbind, exprMatrix_bycluster)
   colnames(exprMatrix_bycluster) <- sort(as.numeric(unique(cluster_labels)))
