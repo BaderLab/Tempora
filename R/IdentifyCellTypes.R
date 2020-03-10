@@ -4,7 +4,7 @@
 #' @param exprMatrix A gene expression matrix, with genes in rows and cells in columns.
 #' @param cell_markers A list of possible cell types found in the dataset and their marker genes.
 #' @param cluster_labels A named vector of cluster identifier for each cell in the gene expression matrix
-#' @noRd
+#' @export
 #' @importFrom GSVA gsva
 #' @return A vector of cell types inferred from the expression of marker genes provided
 #' CalculatePWProfiles
