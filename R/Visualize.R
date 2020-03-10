@@ -27,7 +27,7 @@ PlotTrajectory <- function(object, layout, ...){
   }
 
   if (!layout %in% c("Sugiyama", "force_directed")){
-    stop("Layout method not supported. Layout method can be 'Sugiyama' or 'force_directed'"))
+    stop("Layout method not supported. Layout method can be 'Sugiyama' or 'force_directed'")
   }
 
   edge_graph <- igraph::graph_from_data_frame(d=object@trajectory, vertices = object@cluster.metadata, directed = T)
