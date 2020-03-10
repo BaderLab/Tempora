@@ -3,6 +3,7 @@
 export(BuildTrajectory)
 export(CalculatePWProfiles)
 export(CreateTemporaObject)
+export(IdentifyCellTypes)
 export(IdentifyVaryingPWs)
 export(ImportSeuratObject)
 export(PlotTrajectory)
