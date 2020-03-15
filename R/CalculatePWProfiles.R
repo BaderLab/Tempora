@@ -28,6 +28,7 @@ CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.s
   for (i in sort(unique(object@meta.data$Clusters))){
     exprMatrix_bycluster[[i]] <- rowMeans(exprMatrix[, which(colnames(exprMatrix) %in% rownames(object@meta.data)[which(object@meta.data$Clusters == i)])])
   }
+  names(exprMatrix_bycluster) <- sort(unique(seu_tempora@meta.data$Clusters))
 
   exprMatrix_bycluster <- do.call(cbind, exprMatrix_bycluster)
   colnames(exprMatrix_bycluster) <- sort(unique(object@meta.data$Clusters))
