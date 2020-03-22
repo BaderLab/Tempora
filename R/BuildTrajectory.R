@@ -37,8 +37,8 @@ BuildTrajectory <- function(object, n_pcs, difference_threshold=0.01){
   edges_df <- as.data.frame(mi_network$arcs)
   edges_df$to <- as.numeric(as.character(edges_df$to))
   edges_df$from <- as.numeric(as.character(edges_df$from))
-  edges_df$from_clusterscore <- unlist(sapply(edges_df$from, function(x) object@cluster.metadata$Cluster_time_score[which(rownames(object@cluster.metadata) == x)]))
-  edges_df$to_clusterscore <- unlist(sapply(edges_df$to, function(x) object@cluster.metadata$Cluster_time_score[which(rownames(object@cluster.metadata) == x)]))
+  edges_df$from_clusterscore <- unlist(sapply(edges_df$from, function(x) object@cluster.metadata$Cluster_time_score[object@cluster.metadata$Id == x]))
+  edges_df$to_clusterscore <- unlist(sapply(edges_df$to, function(x) object@cluster.metadata$Cluster_time_score[object@cluster.metadata$Id == x]))
 
 
   edges_df$direction <- ifelse((abs(edges_df$to_clusterscore - edges_df$from_clusterscore)/(0.5*(edges_df$to_clusterscore + edges_df$from_clusterscore))) < difference_threshold, "bidirectional", "unidirectional")

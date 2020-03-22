@@ -25,12 +25,13 @@ CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.s
   exprMatrix <- object@data
   exprMatrix_bycluster <- list()
   pathwaygmt <- GSEABase::getGmt(gmt_path)
-  for (i in sort(as.numeric(unique(object@meta.data$Clusters)))){
+  for (i in sort(unique(object@meta.data$Clusters))){
     exprMatrix_bycluster[[i]] <- rowMeans(exprMatrix[, which(colnames(exprMatrix) %in% rownames(object@meta.data)[which(object@meta.data$Clusters == i)])])
   }
+  names(exprMatrix_bycluster) <- sort(unique(seu_tempora@meta.data$Clusters))
 
   exprMatrix_bycluster <- do.call(cbind, exprMatrix_bycluster)
-  colnames(exprMatrix_bycluster) <- sort(as.numeric(unique(object@meta.data$Clusters)))
+  colnames(exprMatrix_bycluster) <- sort(unique(object@meta.data$Clusters))
   rownames(exprMatrix_bycluster) <- rownames(exprMatrix)
 
   cat("\nCalculating cluster pathway enrichment profiles...\n")
