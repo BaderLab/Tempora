@@ -4,10 +4,12 @@
 \alias{PlotTrajectory}
 \title{Visualize the trajectory}
 \usage{
-PlotTrajectory(object, ...)
+PlotTrajectory(object, layout = NULL, ...)
 }
 \arguments{
 \item{object}{A Tempora object}
+
+\item{layout}{A 2-column matrix containing the x- and y-coordinates of all vertices in the graph. If NULL, the layout will be obtained using Sugiyama layout}
 
 \item{...}{Any additional arguments to plot.igraph}
 }

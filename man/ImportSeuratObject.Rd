@@ -12,7 +12,8 @@ ImportSeuratObject(
   timepoints,
   timepoint_order,
   cluster_labels = NULL,
-  cell_markers = NULL
+  cell_markers = NULL,
+  threshold = 0.9
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ v3, normalized data is stored in the "data" slot, and counts in the
 \item{cluster_labels}{(Optional) A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL and \code{cell_markers} is given, automatic cluster annotation using GSVA will be performed. If both are NULL, cluster numbers will be used to label the trajectory plot.}
 
 \item{cell_markers}{(Optional) A list of possible cell types found in the dataset and their marker genes to be used for automatic cell type identification. If NULL and no \code{cluster_labels} is given, cluster numbers will be used to label the trajectory plot.}
+
+\item{threshold}{(Optional) Threshold of GSVA score quantile. Cell types with GSVA scores in this quantile or higher compared to all other cell type scores for the same cluster would be included in cluster label. Numeric between 0-1, default to 0.9.}
 }
 \value{
 A Tempora object containing the expression matrix and metadata

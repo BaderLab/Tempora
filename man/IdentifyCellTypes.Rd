@@ -4,7 +4,7 @@
 \alias{IdentifyCellTypes}
 \title{Calculate pathway enrichment profile}
 \usage{
-IdentifyCellTypes(exprMatrix, cluster_labels, cell_markers)
+IdentifyCellTypes(exprMatrix, cluster_labels, cell_markers, threshold = 0.9)
 }
 \arguments{
 \item{exprMatrix}{A gene expression matrix, with genes in rows and cells in columns.}
@@ -12,10 +12,11 @@ IdentifyCellTypes(exprMatrix, cluster_labels, cell_markers)
 \item{cluster_labels}{A named vector of cluster identifier for each cell in the gene expression matrix}
 
 \item{cell_markers}{A list of possible cell types found in the dataset and their marker genes.}
+
+\item{threshold}{Threshold of GSVA score quantile. Cell types with GSVA scores in this quantile or higher compared to all other cell type scores for the same cluster would be included in cluster label. Numeric between 0-1, default to 0.9.}
 }
 \value{
 A vector of cell types inferred from the expression of marker genes provided
-CalculatePWProfiles
 }
 \description{
 Calculate cluster average gene expression profile and determine the pathway enrichment profile of each cluster
