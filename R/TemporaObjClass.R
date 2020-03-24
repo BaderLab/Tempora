@@ -235,6 +235,7 @@ setMethod("layouts<-", "Tempora", function(x, value) {
 #' @param timepoint_order An ordered vector of timepoint names from early to late
 #' @param cluster_labels (Optional) A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL and \code{cell_markers} is given, automatic cluster annotation using GSVA will be performed. If both are NULL, cluster numbers will be used to label the trajectory plot.
 #' @param cell_markers (Optional) A list of possible cell types found in the dataset and their marker genes to be used for automatic cell type identification. If NULL and no \code{cluster_labels} is given, cluster numbers will be used to label the trajectory plot.
+#' @param threshold (Optional) Threshold of GSVA score quantile. Cell types with GSVA scores in this quantile or higher compared to all other cell type scores for the same cluster would be included in cluster label. Numeric between 0-1, default to 0.9.
 #' @export
 #' @importFrom methods new validObject
 #' @importFrom stats p.adjust prcomp screeplot
@@ -242,7 +243,7 @@ setMethod("layouts<-", "Tempora", function(x, value) {
 #' @return A Tempora object containing the expression matrix and metadata
 #' @examples \dontrun{tempora_dara <- CreateTemporaObject(exprMatrix, meta.data)}
 #'
-CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_labels=NULL, cell_markers=NULL){
+CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_labels=NULL, cell_markers=NULL, threshold=0.9){
 
   if (!'Timepoints' %in% colnames(meta.data)){
     stop("meta.data needs to contain a column named 'Timepoints' for downstream analyses")
@@ -274,7 +275,7 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
     cat("\nPerforming automated cluster labeling with GSVA...")
     cluster_number <- as.numeric(meta.data$Clusters)
     names(cluster_number) <- rownames(meta.data)
-    cluster_labels <- IdentifyCellTypes(exprMatrix, cluster_labels=cluster_number, cell_markers=cell_markers)
+    cluster_labels <- IdentifyCellTypes(exprMatrix, cluster_labels=cluster_number, cell_markers=cell_markers, threshold=threshold)
     clustmd$label <- paste0("Cluster ", paste(rownames(clustmd), cluster_labels, sep="-"))
   } else {
     clustmd$label <- paste("Cluster ", rownames(clustmd))
@@ -307,6 +308,7 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
 #' @param timepoint_order An ordered vector of timepoint names from early to late
 #' @param cluster_labels (Optional) A vector of cluster annotations (cell types, cell states, cell cycles, etc.), ordered alphanumerically by cluster names. If NULL and \code{cell_markers} is given, automatic cluster annotation using GSVA will be performed. If both are NULL, cluster numbers will be used to label the trajectory plot.
 #' @param cell_markers (Optional) A list of possible cell types found in the dataset and their marker genes to be used for automatic cell type identification. If NULL and no \code{cluster_labels} is given, cluster numbers will be used to label the trajectory plot.
+#' @param threshold (Optional) Threshold of GSVA score quantile. Cell types with GSVA scores in this quantile or higher compared to all other cell type scores for the same cluster would be included in cluster label. Numeric between 0-1, default to 0.9.
 #' @include dataAccess.R
 
 #' @export
@@ -319,7 +321,7 @@ CreateTemporaObject <- function(exprMatrix, meta.data, timepoint_order, cluster_
 
 
 ImportSeuratObject <- function(seuratobj, assayType = "", assaySlot = NA,
-                               clusters, timepoints, timepoint_order, cluster_labels=NULL, cell_markers=NULL){
+                               clusters, timepoints, timepoint_order, cluster_labels=NULL, cell_markers=NULL, threshold=0.9){
   # if(class(seuratobj)[1]=='seurat'){
   #   requireNamespace("Seurat")
   # } else {
@@ -341,7 +343,7 @@ ImportSeuratObject <- function(seuratobj, assayType = "", assaySlot = NA,
   colnames(metadata)[which(colnames(metadata)==clusters)] <- "Clusters"
   colnames(metadata)[which(colnames(metadata)==timepoints)] <- "Timepoints"
   cat("\nCreating Tempora object...")
-  tempora_obj <- CreateTemporaObject(data, meta.data = metadata, timepoint_order =  timepoint_order, cluster_labels = cluster_labels, cell_markers = cell_markers)
+  tempora_obj <- CreateTemporaObject(data, meta.data = metadata, timepoint_order =  timepoint_order, cluster_labels = cluster_labels, cell_markers = cell_markers, threshold=threshold)
   validObject(tempora_obj)
   return(tempora_obj)
 }
