@@ -18,6 +18,7 @@
 #' @slot n.pcs The number of principal components to be used in trajectory construction
 #' @slot trajectory A dataframe describing the inferred trajectory as inferred by \code{\link{BuildTrajectory}}
 #' @slot layouts A matrix containing the Sugiyama layout of the trajectory to be used in \code{\link{PlotTrajectory}}
+#' @slot varying.pws A list of temporally varying pathways identified by \code{\link{IdentifyVaryingPWs}}
 Tempora <- setClass(
   "Tempora",
   slots = c(
@@ -28,7 +29,8 @@ Tempora <- setClass(
     cluster.pathways.dr = "ANY",
     n.pcs = "numeric",
     trajectory = "data.frame",
-    layouts = "matrix"
+    layouts = "matrix",
+    varying.pws = "ANY"
   ))
 setValidity("Tempora", function(object)
   {
@@ -160,6 +162,29 @@ setMethod("cluster.pathways.dr<-", "Tempora", function(x, value) {
   validObject(x)
   return(x)
 })
+
+#' Varying pathways method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod varying.pws
+setGeneric("varying.pws", function(x) standardGeneric("varying.pws"))
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod varying.pws<-
+setGeneric("varying.pws<-", function(x, value) standardGeneric("varying.pws<-"))
+#' Extract varying pathways from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases varying.pws
+setMethod("varying.pws", "Tempora", function(x) x@varying.pws)
+#' @rdname Tempora-class
+#' @aliases varying.pws<-
+setMethod("varying.pws<-", "Tempora", function(x, value) {
+  x@cluster.pathways.dr <- value
+  validObject(x)
+  return(x)
+})
+
 
 #' Number of PCs to use in trajectory construction method
 #' @name Tempora-class

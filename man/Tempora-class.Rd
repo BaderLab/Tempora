@@ -24,6 +24,10 @@
 \alias{cluster.pathways.dr}
 \alias{cluster.pathways.dr<-,Tempora-method}
 \alias{cluster.pathways.dr<-}
+\alias{varying.pws,Tempora-method}
+\alias{varying.pws}
+\alias{varying.pws<-,Tempora-method}
+\alias{varying.pws<-}
 \alias{n.pcs,Tempora-method}
 \alias{n.pcs}
 \alias{n.pcs<-,Tempora-method}
@@ -78,6 +82,14 @@ cluster.pathways.dr(x) <- value
 
 \S4method{cluster.pathways.dr}{Tempora}(x) <- value
 
+varying.pws(x)
+
+varying.pws(x) <- value
+
+\S4method{varying.pws}{Tempora}(x)
+
+\S4method{varying.pws}{Tempora}(x) <- value
+
 n.pcs(x)
 
 n.pcs(x) <- value
@@ -130,5 +142,7 @@ collection timepoint and cluster identity of each cell}
 \item{\code{trajectory}}{A dataframe describing the inferred trajectory as inferred by \code{\link{BuildTrajectory}}}
 
 \item{\code{layouts}}{A matrix containing the Sugiyama layout of the trajectory to be used in \code{\link{PlotTrajectory}}}
+
+\item{\code{varying.pws}}{A list of temporally varying pathways identified by \code{\link{IdentifyVaryingPWs}}}
 }}
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/IdentifyVaryingPWs.R
 \name{IdentifyVaryingPWs}
 \alias{IdentifyVaryingPWs}
-\title{Calculate pathway enrichment profile}
+\title{Calculate temporally changing pathways}
 \usage{
 IdentifyVaryingPWs(object, pval_threshold = 0.05)
 }
@@ -12,7 +12,7 @@ IdentifyVaryingPWs(object, pval_threshold = 0.05)
 \item{pval_threshold}{P-value threshold to determine the significance of pathway enrichment over time. Default to 0.05.}
 }
 \description{
-Calculate cluster average gene expression profile and determine the pathway enrichment profile of each cluster
+Identify the pathways that change over time by fitting a generalized additive model
 }
 \examples{
 \dontrun{tempora_data <- IdentifyVaryingPWs(tempora_data, pval_threshold = 0.05)}

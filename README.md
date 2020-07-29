@@ -2,6 +2,18 @@ Tempora: cell trajectory inference using time-series single-cell RNA
 sequencing data
 ================
 
+  - [Introduction](#introduction)
+  - [Usage](#usage)
+      - [Installation](#installation)
+      - [Sample data](#sample-data)
+      - [Input data](#input-data)
+      - [Calculate clusters’ pathway enrichment
+        profiles](#calculate-clusters-pathway-enrichment-profiles)
+      - [Build and visualize
+        trajectory](#build-and-visualize-trajectory)
+      - [Identify temporally dependent
+        pathways](#identify-temporally-dependent-pathways)
+
 ## Introduction
 
 Tempora is a novel cell trajectory inference method that orders cells
@@ -39,10 +51,11 @@ The MouseCortex dataset will be used in this vignette as an example.
 
 Tempora takes processed scRNAseq data as input, either as a gene
 expression matrix with separate time and cluster labels for all cells,
-or a Seurat object containing gene expression data and a clustering
-result. Tempora does not implement clustering or batch effect correction
-as part of its pipeline and assumes that the user has input a
-well-annotated cluster solution free of batch effect into the method.
+or a Seurat or SingleCellExperiment object containing gene expression
+data and a clustering result. Tempora does not implement clustering or
+batch effect correction as part of its pipeline and assumes that the
+user has input a well-annotated cluster solution free of batch effect
+into the method.
 
 ``` r
 #Load MouseCortex sample data
@@ -51,11 +64,19 @@ load("MouseCortex.RData")
 
 We can the import the Seurat object containing the murine cerebral
 cortex development data into a Tempora object to start the analysis.
+Here, as the clusters have been manually annotated prior to running
+Tempora, a vector of cluster label is given to the function. If you have
+yet to annotate your clusters but have a list of marker genes for
+expected cell types in the data, you can input the list of marker genes
+to this function to run automated cluster labeling with GSVA.
 
 ``` r
 #Import MouseCortex data 
+#As this is a Seurat v2 object, set assayType to ""
+#See ?Tempora::ImportSeuratObject for additional arguments to import Seurat v3 or SingleCellExperiment obbjects
 cortex_tempora <- ImportSeuratObject(MouseCortex, clusters = "res.0.6",
                                      timepoints = "Time_points", 
+                                     assayType = "",
                                      cluster_labels = c("Neurons","Young neurons","APs/RPs",
                                                         "IPs","APs/RPs", "Young neurons", "IPs"),
                                      timepoint_order = c("e11", "e13", "e15", "e17"))
@@ -127,9 +148,13 @@ drawing algorithm.
 
 Finally, we can use Tempora to investigate time-dependent pathways.
 Tempora fits a generalized additive model to the data to identify
-pathways whose expressions change over the temporal axis.
+pathways whose expressions change over the temporal axis. The results of
+this analysis is stored in the *varying.pws* slot of the Tempora object.
 
 ``` r
 #Fit GAMs on pathway enrichment profile
 cortex_tempora <- IdentifyVaryingPWs(cortex_tempora, pval_threshold = 0.05)
+
+#Plot expression trends of significant time-varying pathways
+PlotVaryingPWs(cortex_tempora)
 ```

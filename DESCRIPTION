@@ -30,6 +30,7 @@ Collate:
     'CalculatePWProfiles.R'
     'IdentifyCellTypes.R'
     'IdentifyVaryingPWs.R'
+    'PlotVaryingPWs.R'
     'dataAccess.R'
     'TemporaObjClass.R'
     'Visualize.R'
