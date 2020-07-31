@@ -43,7 +43,7 @@ library(Tempora)
 The Tempora package was validated using two datasets: an *in vitro*
 differentiation of human skeletal muscle myoblasts and *in vivo* early
 development of murine cerebral cortex. These processed datasets can be
-accessed on the Bader Lab website at <http://baderlab.org/>.
+accessed on the Bader Lab website at <https://www.baderlab.org/Software/Tempora>.
 
 The MouseCortex dataset will be used in this vignette as an example.
 
