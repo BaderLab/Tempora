@@ -40,7 +40,7 @@ library(Tempora)
 
 ### Sample data
 
-The Tempora package was validated using two datasets: an *in vitro*
+The Tempora package was validated using three datasets: an *in vitro*
 differentiation of human skeletal muscle myoblasts, *in vivo* early
 development of murine cerebral cortex and *in vivo* embryonic and
 postnatal development of murine cerebellum. These processed datasets can
