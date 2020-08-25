@@ -63,9 +63,13 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
   varying_pathways <- p_vals_adj[which(p_vals_adj < pval_threshold)]
   varying_pathways <- varying_pathways[!duplicated(names(varying_pathways))]
 
-  object@varying.pws <- varying_pathways
-  object@gams <- gams
-  return(object)
+  if (length(varying_pathways)==0){
+    cat("No temporally varying pathways detected. Please try running IdentifyVaryingPWs with a more relaxed p-value cutoff.")
+  } else {
+    object@varying.pws <- varying_pathways
+    object@gams <- gams
+    return(object)
+  }
 }
 
 

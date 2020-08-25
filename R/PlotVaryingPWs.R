@@ -16,7 +16,7 @@ PlotVaryingPWs <- function(object){
     stop("Not a valid Tempora object")
   }
   if (is.null(object@varying.pws)){
-    stop("IdentifyVaryingPWs has not been run. See ?Tempora::IdentifyVaryingPWs for details")
+    stop("IdentifyVaryingPWs has not been run or no temporally varying pathways were detected. Please run IdentifyVaryingPWs or re-run with a more relaxed p-value cutoff See ?Tempora::IdentifyVaryingPWs for details")
   }
 
 varying_pathways <- object@varying.pws
