@@ -41,6 +41,11 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
   p_vals <- gams <- list()
   for (i in 1:length(themes)){
     print(i)
+    if(length(grep(themes[i], rownames(gsva_bycluster))) == 0) {
+      p_vals[[i]] <- 1
+      gams[[i]] <- NA
+      next
+      }
     if (length(grep(themes[i], rownames(gsva_bycluster))) > 1){
       plot_df <- data.frame(cluster=colnames(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]), value=colMeans(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ], na.rm=T))
     } else if (length(grep(themes[i], rownames(gsva_bycluster))) == 1){
@@ -53,12 +58,13 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
 
   names(p_vals) <- names(gams) <- themes
 
-  pval_threshold = 0.05
+  pval_threshold = pval_threshold
   p_vals_adj <- p.adjust(unlist(p_vals[which(unlist(p_vals) > 0)]), method = "BH")
   varying_pathways <- p_vals_adj[which(p_vals_adj < pval_threshold)]
   varying_pathways <- varying_pathways[!duplicated(names(varying_pathways))]
 
   object@varying.pws <- varying_pathways
+  object@gams <- gams
   return(object)
 }
 

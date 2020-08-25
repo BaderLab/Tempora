@@ -30,7 +30,8 @@ Tempora <- setClass(
     n.pcs = "numeric",
     trajectory = "data.frame",
     layouts = "matrix",
-    varying.pws = "ANY"
+    varying.pws = "ANY",
+    gams = "ANY"
   ))
 setValidity("Tempora", function(object)
   {
@@ -180,7 +181,30 @@ setMethod("varying.pws", "Tempora", function(x) x@varying.pws)
 #' @rdname Tempora-class
 #' @aliases varying.pws<-
 setMethod("varying.pws<-", "Tempora", function(x, value) {
-  x@cluster.pathways.dr <- value
+  x@varying.pws <- value
+  validObject(x)
+  return(x)
+})
+
+
+#' GAMs method
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod gams
+setGeneric("gams", function(x) standardGeneric("gams"))
+#' @name Tempora-class
+#' @rdname Tempora-class
+#' @exportMethod gams<-
+setGeneric("gams<-", function(x, value) standardGeneric("gams<-"))
+#' Extract calculated GAMs from Tempora object
+#'
+#' @rdname Tempora-class
+#' @aliases gams
+setMethod("gams", "Tempora", function(x) x@gams)
+#' @rdname Tempora-class
+#' @aliases gams<-
+setMethod("gams<-", "Tempora", function(x, value) {
+  x@gams <- value
   validObject(x)
   return(x)
 })

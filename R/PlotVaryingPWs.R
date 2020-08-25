@@ -21,6 +21,7 @@ PlotVaryingPWs <- function(object){
 
 varying_pathways <- object@varying.pws
 gsva_bycluster <- object@cluster.pathways
+gams <- object@gams
 
 cat("\nPlotting time-dependent pathways...")
 

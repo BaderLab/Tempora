@@ -28,6 +28,10 @@
 \alias{varying.pws}
 \alias{varying.pws<-,Tempora-method}
 \alias{varying.pws<-}
+\alias{gams,Tempora-method}
+\alias{gams}
+\alias{gams<-,Tempora-method}
+\alias{gams<-}
 \alias{n.pcs,Tempora-method}
 \alias{n.pcs}
 \alias{n.pcs<-,Tempora-method}
@@ -89,6 +93,14 @@ varying.pws(x) <- value
 \S4method{varying.pws}{Tempora}(x)
 
 \S4method{varying.pws}{Tempora}(x) <- value
+
+gams(x)
+
+gams(x) <- value
+
+\S4method{gams}{Tempora}(x)
+
+\S4method{gams}{Tempora}(x) <- value
 
 n.pcs(x)
 
