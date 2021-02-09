@@ -16,7 +16,7 @@ Imports:
     methods, 
     devtools, 
     reshape2,
-    scales.
+    scales,
     Seurat
 Encoding: UTF-8
 LazyData: true
