@@ -103,6 +103,30 @@ gene set database without electronic annotation Gene Ontology terms,
 which can be accessed on the [Bader Lab
 website](http://download.baderlab.org/EM_Genesets/current_release/).
 
+To automatically pull the latest version of the gmt file:
+```{r download baderlab gmt file, message=FALSE, warning=FALSE}
+if (!require('RCurl')) {
+  install.package('RCurl')
+} 
+gmt_url = "http://download.baderlab.org/EM_Genesets/current_release/Mouse/symbol/"
+#list all the files on the server
+filenames = getURL(gmt_url)
+tc = textConnection(filenames)
+contents = readLines(tc)
+close(tc)
+#get the gmt that has all the pathways and does not include terms inferred from electronic annotations(IEA)
+#start with gmt file that has pathways only
+rx = gregexpr("(?<=<a href=\")(.*.GOBP_AllPathways_no_GO_iea.*.)(.gmt)(?=\">)",
+  contents, perl = TRUE)
+gmt_file = unlist(regmatches(contents, rx))
+dest_gmt_file <- file.path(getwd(),gmt_file )
+download.file(
+    paste(gmt_url,gmt_file,sep=""),
+    destfile=dest_gmt_file
+)
+```
+
+
 This function also performs principal component analysis (PCA) on the
 clusters pathway enrichment profiles to remove redundancy due to
 overrepresentation of certain pathways in the database. The PCA result
@@ -113,7 +137,7 @@ scree plot to help users identify the number of principal components
 ``` r
 #Estimate pathway enrichment profiles of clusters
 cortex_tempora <- CalculatePWProfiles(cortex_tempora, 
-                gmt_path = "Mouse_GOBP_AllPathways_no_GO_iea_September_01_2019_symbol.gmt",
+                gmt_path = gmt_file,
                 method="gsva", min.sz = 5, max.sz = 200, parallel.sz = 1)
 ```
 
