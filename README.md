@@ -60,6 +60,9 @@ user has input a well-annotated cluster solution free of batch effect
 into the method.
 
 ``` r
+#install Seurat package when using the MouseCortex data.
+install.packages("Seurat")
+
 #Load MouseCortex sample data
 load("MouseCortex.RData")
 ```
