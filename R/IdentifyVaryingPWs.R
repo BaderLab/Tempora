@@ -65,6 +65,10 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
 
   if (length(varying_pathways)==0){
     cat("No temporally varying pathways detected. Please try running IdentifyVaryingPWs with a more relaxed p-value cutoff.")
+    #eventhough the function was not successful return the object because in the vignette
+    # this function call sets the original object to what is returned and if it is null
+    # you loose all the processing you have done until now. 
+    return(object)
   } else {
     object@varying.pws <- varying_pathways
     object@gams <- gams
