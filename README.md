@@ -109,15 +109,18 @@ if (!require('RCurl')) {
   install.package('RCurl')
 } 
 gmt_url = "http://download.baderlab.org/EM_Genesets/current_release/Mouse/symbol/"
+
 #list all the files on the server
 filenames = getURL(gmt_url)
 tc = textConnection(filenames)
 contents = readLines(tc)
 close(tc)
+
 #get the gmt that has all the pathways and does not include terms inferred from electronic annotations(IEA)
 #start with gmt file that has pathways only
 rx = gregexpr("(?<=<a href=\")(.*.GOBP_AllPathways_no_GO_iea.*.)(.gmt)(?=\">)",
   contents, perl = TRUE)
+
 gmt_file = unlist(regmatches(contents, rx))
 dest_gmt_file <- file.path(getwd(),gmt_file )
 download.file(
