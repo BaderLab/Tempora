@@ -29,8 +29,10 @@ inferred trajectory.
 You can install Tempora using devtools:
 
 ``` r
-# install devtools
-install.packages("devtools")
+if (!require('devtools')) {
+  # install devtools
+  install.packages("devtools")
+}
 
 # install Tempora
 devtools::install_github("BaderLab/Tempora")
@@ -49,6 +51,26 @@ be accessed on the Bader Lab website at
 
 The MouseCortex dataset will be used in this vignette as an example.
 
+### Downlaod the vignette example data.
+
+Manually download the data from <https://www.baderlab.org/Software/Tempora>.
+
+Or execute the following code to automatically download it.
+
+``` r
+if (!require('RCurl')) {
+  install.package('RCurl')
+} 
+
+data_url = "https://www.baderlab.org/Software/Tempora?action=AttachFile&do=get&target="
+data_file = "MouseCortex.RData"
+dest_data_file <- file.path(getwd(),data_file )
+download.file(
+    paste(data_url,data_file,sep=""),
+    destfile=dest_data_file
+)
+```
+
 ### Input data
 
 Tempora takes processed scRNAseq data as input, either as a gene
@@ -63,6 +85,7 @@ into the method.
 #install Seurat package when using the MouseCortex data.
 if (!require('Seurat')) {
   install.packages('Seurat')
+  library('Seurat')
 } 
 
 #Load MouseCortex sample data
