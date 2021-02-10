@@ -61,7 +61,9 @@ into the method.
 
 ``` r
 #install Seurat package when using the MouseCortex data.
-install.packages("Seurat")
+if (!require('Seurat')) {
+  install.packages('Seurat')
+} 
 
 #Load MouseCortex sample data
 load("MouseCortex.RData")
