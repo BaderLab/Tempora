@@ -11,7 +11,7 @@
 #' @importFrom methods new validObject
 #' @importFrom stats p.adjust prcomp screeplot
 #' @importFrom reshape2 dcast
-#' @examples \dontrun{tempora_data <- BuildTrajectory(tempora_data, n_pcs=10, difference_threshold=0.01)}
+#' @examples \dontrun{tempora_data <- BuildTrajectory(tempora_data, n_pcs=10, difference_threshold=0.01, loadings=0.4)}
 #' BuildTrajectory
 BuildTrajectory <- function(object, n_pcs, difference_threshold=0.01, loadings = 0.4){
 

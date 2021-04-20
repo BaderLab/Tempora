@@ -4,7 +4,7 @@
 \alias{BuildTrajectory}
 \title{Build mutual information-based network}
 \usage{
-BuildTrajectory(object, n_pcs, difference_threshold = 0.01)
+BuildTrajectory(object, n_pcs, difference_threshold = 0.01, loadings = 0.4)
 }
 \arguments{
 \item{object}{A Tempora object containing a gene expression matrix and metadata}
@@ -21,6 +21,6 @@ Build the information-based cluster-cluster network using reduced-dimensionality
 This network connects related cell types and states across multiple time points. Taking advantage of the available time information, Tempora also infers the directions of all connections in a trajectory that go from early to late clusters.
 }
 \examples{
-\dontrun{tempora_data <- BuildTrajectory(tempora_data, n_pcs=10, difference_threshold=0.01)}
+\dontrun{tempora_data <- BuildTrajectory(tempora_data, n_pcs=10, difference_threshold=0.01, loadings=0.4)}
 BuildTrajectory
 }
