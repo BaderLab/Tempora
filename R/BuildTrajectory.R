@@ -5,7 +5,7 @@
 #' @param object A Tempora object containing a gene expression matrix and metadata
 #' @param n_pcs Number of principal components to be used in building the network.
 #' @param difference_threshold Percent of permissible difference between the temporal scores of two clusters to determine the direction of their connections. The temporal scores are calculated based on based on the clusters' composition of cells from each timepoint. The directions of edges connecting pairs of clusters will only be determined for cluster pairs with difference in their time scores higher than the threshold. Other edges will remain undirected. Default at 0.01
-#' @param loadings Threshold of PCA loadings for pathways to be used in trajectory construction. The higher the loading, the more the pathway contributes to a PC. Default at 0.4.
+#' @param loadings Threshold of PCA loadings for pathways to be used in trajectory construction. The higher the loading, the more the pathway contributes to a principal component. Default at 0.4.
 #' @export
 #' @importFrom bnlearn aracne
 #' @importFrom methods new validObject
