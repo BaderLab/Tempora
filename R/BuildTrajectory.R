@@ -5,6 +5,7 @@
 #' @param object A Tempora object containing a gene expression matrix and metadata
 #' @param n_pcs Number of principal components to be used in building the network.
 #' @param difference_threshold Percent of permissible difference between the temporal scores of two clusters to determine the direction of their connections. The temporal scores are calculated based on based on the clusters' composition of cells from each timepoint. The directions of edges connecting pairs of clusters will only be determined for cluster pairs with difference in their time scores higher than the threshold. Other edges will remain undirected. Default at 0.01
+#' @param loadings Threshold of PCA loadings for pathways to be used in trajectory construction. The higher the loading, the more the pathway contributes to a PC. Default at 0.4.
 #' @export
 #' @importFrom bnlearn aracne
 #' @importFrom methods new validObject
@@ -12,7 +13,7 @@
 #' @importFrom reshape2 dcast
 #' @examples \dontrun{tempora_data <- BuildTrajectory(tempora_data, n_pcs=10, difference_threshold=0.01)}
 #' BuildTrajectory
-BuildTrajectory <- function(object, n_pcs, difference_threshold=0.01){
+BuildTrajectory <- function(object, n_pcs, difference_threshold=0.01, loadings = 0.4){
 
   if (class(object)[1] != "Tempora"){
     stop("Not a valid Tempora object")
@@ -26,7 +27,7 @@ BuildTrajectory <- function(object, n_pcs, difference_threshold=0.01){
   significant_pathways_list <- gsva_pca <- list()
   for (i in 1:n_pcs){
     genes_scaled <- scale(object@cluster.pathways.dr$rotation[,i])
-    significant_pathways_list[[i]] <- object@cluster.pathways[which(rownames(object@cluster.pathways) %in% names(which(genes_scaled[,1] > 0.4 | genes_scaled[,1] < -0.4))), ]
+    significant_pathways_list[[i]] <- object@cluster.pathways[which(rownames(object@cluster.pathways) %in% names(which(genes_scaled[,1] > loadings | genes_scaled[,1] < (-1*loadings))), ]
     gsva_pca[[i]] <- colMeans(significant_pathways_list[[i]])
   }
 
