@@ -12,9 +12,9 @@ BuildTrajectory(object, n_pcs, difference_threshold = 0.01, loadings = 0.4)
 \item{n_pcs}{Number of principal components to be used in building the network.}
 
 \item{difference_threshold}{Percent of permissible difference between the temporal scores of two clusters to determine the direction of their connections. The temporal scores are calculated based on based on the clusters' composition of cells from each timepoint. The directions of edges connecting pairs of clusters will only be determined for cluster pairs with difference in their time scores higher than the threshold. Other edges will remain undirected. Default at 0.01}
-}
 
 \item{loadings}{Threshold of PCA loadings for pathways to be used in trajectory construction. The higher the loading, the more the pathway contributes to a principal component. Default at 0.4.}
+}
 
 \description{
 Build the information-based cluster-cluster network using reduced-dimensionality pathway enrichment profiles of all clusters.
