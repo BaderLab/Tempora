@@ -27,7 +27,7 @@ BuildTrajectory <- function(object, n_pcs, difference_threshold=0.01, loadings =
   significant_pathways_list <- gsva_pca <- list()
   for (i in 1:n_pcs){
     genes_scaled <- scale(object@cluster.pathways.dr$rotation[,i])
-    significant_pathways_list[[i]] <- object@cluster.pathways[which(rownames(object@cluster.pathways) %in% names(which(genes_scaled[,1] > loadings | genes_scaled[,1] < (-1*loadings))), ]
+    significant_pathways_list[[i]] <- object@cluster.pathways[which(rownames(object@cluster.pathways) %in% names(which(genes_scaled[,1] > loadings | genes_scaled[,1] < (-1*loadings)))), ]
     gsva_pca[[i]] <- colMeans(significant_pathways_list[[i]])
   }
 
