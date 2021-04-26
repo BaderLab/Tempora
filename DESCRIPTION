@@ -1,7 +1,7 @@
 Package: Tempora
 Type: Package
 Title: Pathway-based Trajectory Inference for Time-series Single Cell RNA-Seq Data
-Version: 0.1.0
+Version: 0.1.08
 Author: Thinh Tran 
 Maintainer: Thinh Tran <thinh.tran@nyu.edu>
 Description: Tempora is a trajectory inference method that infers cell lineage maps from time-series scRNAseq data using pathway enrichment profiles of single cells and experimental time information. Tempora uses an information theoretic approach to build a trajectory at the cluster level based on the clusters’ pathway enrichment profiles, effectively connecting cell types and states across multiple time points. Taking advantage of the available time information, Tempora can infer the directions of all connections in a trajectory that go from early to late clusters. 
