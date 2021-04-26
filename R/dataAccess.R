@@ -142,5 +142,5 @@ suppressMessages(
 
 suppressMessages(
   setMethod("getMD","SingleCellExperiment",
-            function(x) SingleCellExperiment::colData(x))
+            function(x) data.frame(SingleCellExperiment::colData(x)))
 )
