@@ -14,6 +14,7 @@
 #' @importFrom stats p.adjust prcomp screeplot
 #' @importFrom scales rescale
 #' @importFrom reshape2 dcast
+#' @importFrom magrittr '%>%'
 #'
 #'
 PlotTrajectory <- function(object, layout=NULL, ...){
