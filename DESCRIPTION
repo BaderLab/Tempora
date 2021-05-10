@@ -19,7 +19,7 @@ Imports:
     scales
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,
@@ -30,6 +30,7 @@ Collate:
     'CalculatePWProfiles.R'
     'IdentifyCellTypes.R'
     'IdentifyVaryingPWs.R'
+    'IdentifyVaryingPWsParallel.R'
     'PlotVaryingPWs.R'
     'dataAccess.R'
     'TemporaObjClass.R'

@@ -15,7 +15,6 @@ BuildTrajectory(object, n_pcs, difference_threshold = 0.01, loadings = 0.4)
 
 \item{loadings}{Threshold of PCA loadings for pathways to be used in trajectory construction. The higher the loading, the more the pathway contributes to a principal component. Default at 0.4.}
 }
-
 \description{
 Build the information-based cluster-cluster network using reduced-dimensionality pathway enrichment profiles of all clusters.
 This network connects related cell types and states across multiple time points. Taking advantage of the available time information, Tempora also infers the directions of all connections in a trajectory that go from early to late clusters.
