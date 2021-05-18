@@ -37,6 +37,12 @@ CalculatePWProfiles <- function(object, gmt_path, method="gsva", min.sz=5, max.s
   cat("\nCalculating cluster pathway enrichment profiles...\n")
   gsva_bycluster <- GSVA::gsva(as.matrix(exprMatrix_bycluster), pathwaygmt, method=method, min.sz=min.sz, max.sz=max.sz, parallel.sz=parallel.sz)
 
+  oldrownames =rownames(gsva_bycluster)
+  newrownames <- sub("%.*", "", oldrownames)
+  newrownames <- gsub("\\s*\\([^\\)]+\\)","",newrownames)
+  newrownames <- gsub("[[:punct:]]", "_", newrownames)
+  rownames(gsva_bycluster) <- newrownames
+
   colnames(gsva_bycluster) <- colnames(exprMatrix_bycluster)
   object@cluster.pathways <- gsva_bycluster
 

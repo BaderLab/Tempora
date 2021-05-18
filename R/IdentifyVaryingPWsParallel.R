@@ -29,13 +29,20 @@ IdentifyVaryingPWsParallel <- function(object, pval_threshold=0.05){
   significant_pathways <- c()
   for (i in 1:object@n.pcs){
     genes_scaled <- scale(object@cluster.pathways.dr$rotation[,i])
-    significant_pathways <- c(names(which(genes_scaled[,1] > 1.5 | genes_scaled[,1] < -1.5)), significant_pathways)
+    significant_pathways <- c(names(which(genes_scaled[,1] > 1.0 | genes_scaled[,1] < -1.0)), significant_pathways)
   }
 
-  pca_pathways <- sub("%.*", "", significant_pathways)
-  pca_pathways <- gsub("\\s*\\([^\\)]+\\)","",pca_pathways)
-  pca_pathways_cleaned <- gsub("[[:punct:]]", "", pca_pathways)
-  themes <- pca_pathways_cleaned
+  # pca_pathways <- sub("%.*", "", significant_pathways)
+  # pca_pathways <- gsub("\\s*\\([^\\)]+\\)","",pca_pathways)
+  # pca_pathways_cleaned <- gsub("[[:punct:]]", "_", pca_pathways)
+  # themes <- pca_pathways_cleaned
+  themes <- significant_pathways
+
+  # oldrownames =rownames(gsva_bycluster)
+  # newrownames <- sub("%.*", "", oldrownames)
+  # newrownames <- gsub("\\s*\\([^\\)]+\\)","",newrownames)
+  # newrownames <- gsub("[[:punct:]]", "_", newrownames)
+  # rownames(gsva_bycluster) <- newrownames
 
   if (DEBUG) cat("Fitting GAM models...")
 

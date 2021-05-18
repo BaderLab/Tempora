@@ -28,13 +28,20 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
   significant_pathways <- c()
   for (i in 1:object@n.pcs){
     genes_scaled <- scale(object@cluster.pathways.dr$rotation[,i])
-    significant_pathways <- c(names(which(genes_scaled[,1] > 1.5 | genes_scaled[,1] < -1.5)), significant_pathways)
+    significant_pathways <- c(names(which(genes_scaled[,1] > 1.0 | genes_scaled[,1] < -1.0)), significant_pathways)
   }
 
-  pca_pathways <- sub("%.*", "", significant_pathways)
-  pca_pathways <- gsub("\\s*\\([^\\)]+\\)","",pca_pathways)
-  pca_pathways_cleaned <- gsub("[[:punct:]]", "", pca_pathways)
-  themes <- pca_pathways_cleaned
+  # pca_pathways <- sub("%.*", "", significant_pathways)
+  # pca_pathways <- gsub("\\s*\\([^\\)]+\\)","",pca_pathways)
+  # pca_pathways_cleaned <- gsub("[[:punct:]]", "_", pca_pathways)
+  # themes <- pca_pathways_cleaned
+  themes <- significant_pathways
+
+  # oldrownames =rownames(gsva_bycluster)
+  # newrownames <- sub("%.*", "", oldrownames)
+  # newrownames <- gsub("\\s*\\([^\\)]+\\)","",newrownames)
+  # newrownames <- gsub("[[:punct:]]", "_", newrownames)
+  # rownames(gsva_bycluster) <- newrownames
 
   cat("Fitting GAM models...")
 
@@ -51,6 +58,7 @@ IdentifyVaryingPWs <- function(object, pval_threshold=0.05){
     } else if (length(grep(themes[i], rownames(gsva_bycluster))) == 1){
       plot_df <- data.frame(cluster=names(gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]), value=gsva_bycluster[grep(themes[i], rownames(gsva_bycluster)), ]) }
     plot_df$time <- object@cluster.metadata$Cluster_time_score
+    # gam: Generalized additive models with integrated smoothness estimation
     gams[[i]] <- mgcv::gam(value ~ s(time, k=3, bs='cr'), data=plot_df)
     temp_anova <- mgcv::anova.gam(gams[[i]])
     p_vals[[i]] <- temp_anova$s.pv
