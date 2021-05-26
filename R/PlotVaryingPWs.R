@@ -25,15 +25,14 @@ gams <- object@gams
 
 cat("\nPlotting time-dependent pathways...")
 
-for (i in 1:length(varying_pathways)){
+for (i in order(varying_pathways)){
   if (length(grep(names(varying_pathways)[i], rownames(gsva_bycluster))) > 1){
     plot_df <- data.frame(cluster=colnames(gsva_bycluster[grep(names(varying_pathways)[i], rownames(gsva_bycluster)), ]), value=colMeans(gsva_bycluster[grep(names(varying_pathways)[i], rownames(gsva_bycluster)), ]))
     plot_df$time <- object@cluster.metadata$Cluster_time_score
-  }
-  else if (length(grep(names(varying_pathways)[i], rownames(gsva_bycluster))) == 1) {
+  } else if (length(grep(names(varying_pathways)[i], rownames(gsva_bycluster))) == 1) {
     plot_df <- data.frame(cluster=names(gsva_bycluster[grep(names(varying_pathways)[i], rownames(gsva_bycluster)), ]), value=gsva_bycluster[grep(names(varying_pathways)[i], rownames(gsva_bycluster)), ])
     plot_df$time <- object@cluster.metadata$Cluster_time_score
-  }
+  } else {return(NULL)}
   id <- which(names(gams)==names(varying_pathways)[i])
   mgcv::plot.gam(gams[[id[1]]], main = paste0(names(varying_pathways)[i]), xlab = "Inferred time", ylab="Pathway expression level", bty="l",
                  cex.main = 1, xaxt = "n", shade= F, se=3, scheme=1)
